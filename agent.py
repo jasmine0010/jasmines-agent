@@ -71,14 +71,17 @@ def execute_tool(call, approve):
         return {"error": "The shell could not be started or its working folder is unavailable."}
 
 
-def run_turn(messages, prompt, approve, emit):
+def run_turn(messages, prompt, approve, emit, checkpoint=None):
     """The agent loop. The interface supplies approval and displays events."""
+    checkpoint = checkpoint or (lambda messages: None)
     messages.append({"role": "user", "content": prompt})
+    checkpoint(messages)
     for round_number in range(MAX_TOOL_ROUNDS):
         result = call_model(messages, [TOOL])  # 1. Resend the conversation and tool.
         emit({"type": "usage", "text": usage_text(result), "model": result.get("model")})
         message = result["choices"][0]["message"]
         messages.append(message)  # 2. Remember the model's reply, including tool IDs.
+        checkpoint(messages)
         if message.get("content"):
             emit({"type": "assistant", "text": message["content"]})
         calls = message.get("tool_calls") or []
@@ -86,11 +89,12 @@ def run_turn(messages, prompt, approve, emit):
             return
         for call in calls:  # 4. Execute each tool only after the user approves it.
             output = execute_tool(call, approve)
-            emit({"type": "tool_result", "result": output})
             messages.append({  # 5. Give the result back using the same tool-call ID.
                 "role": "tool", "tool_call_id": call["id"],
                 "content": json.dumps(output),
             })
+            checkpoint(messages)
+            emit({"type": "tool_result", "result": output})
         # 6. Repeat so the model can use the results or request another command.
     emit({"type": "error", "text": "Stopped at the 20-round limit. Send a new message to continue."})
 
@@ -138,5 +142,3 @@ if __name__ == "__main__":
     except (RuntimeError, OSError, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)
-
-

@@ -5,32 +5,205 @@
 <meta name="chat-token" content="__API_TOKEN__">
 <title>Jasmine's Agent</title>
 <style>
+
 :root{font-family:Inter,Segoe UI,system-ui,sans-serif;color:#202c3c;background:#f4f5f7;font-size:15px;--line:#e1e5eb;--muted:#657285;--accent:#ad4c17}*{box-sizing:border-box}body{margin:0;height:100dvh;display:flex}button,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}aside{width:252px;flex-shrink:0;background:#182536;color:#eef1f5;padding:32px 24px;display:flex;flex-direction:column;gap:28px}.brand{font-size:12px;letter-spacing:.19em;color:#e6aa74;font-weight:700}.brand b{display:block;font-size:24px;letter-spacing:-.04em;color:white;margin-top:10px;line-height:1.15}.aside-note{font-size:13px;line-height:1.65;color:#aebccc}.side-label{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#8298ae;margin-bottom:10px}.side-row{font-size:13px;padding:9px 0;border-bottom:1px solid #304052}.side-row span{float:right;color:#b9d2bb}.new{width:100%;text-align:left;border:1px solid #4d5f74;border-radius:8px;background:transparent;color:white;padding:12px}.sidebar-bottom{margin-top:auto;font-size:12px;color:#9bacc0;line-height:1.6}main{min-width:0;flex:1;display:flex;flex-direction:column}header{height:78px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:#fff;gap:12px}header strong{font-size:15px}header small{display:block;color:var(--muted);font-size:12px;margin-top:4px}.status{font-size:12px;color:#487352;display:flex;align-items:center;gap:8px;white-space:nowrap}.dot{height:7px;width:7px;border-radius:50%;background:currentColor}#feed{overflow:auto;flex:1;padding:36px;scroll-behavior:smooth}.stream{max-width:850px;margin:auto}.welcome{padding:54px 0 20px;max-width:650px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);font-weight:700}.welcome h1{font-size:40px;letter-spacing:-.045em;line-height:1.1;margin:14px 0 18px;font-weight:650}.welcome p{color:var(--muted);line-height:1.7;font-size:15px;max-width:530px}.suggestions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}.suggestions button{background:white;border:1px solid var(--line);border-radius:8px;padding:12px 14px;text-align:left;color:#35465d;font-size:13px}.message{margin-bottom:23px}.message .label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);margin:0 0 9px}.message.user{margin-left:12%;background:#e8edf3;border:1px solid #dde4ec;border-radius:12px;padding:15px 18px}.text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}.usage{font-size:11px;color:var(--muted);margin:4px 0 17px;font-family:ui-monospace,Consolas,monospace;line-height:1.7}.command{border:1px solid #dfbd99;background:#fffbf5;border-radius:10px;margin:14px 0 18px;overflow:hidden}.command-title{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #ead7c0;font-size:12px;font-weight:650}.command pre,.tool pre{margin:0;padding:15px 16px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6;font-family:ui-monospace,Consolas,monospace}.actions{display:flex;gap:8px;padding:0 16px 14px}.actions button{padding:8px 17px;border:1px solid #d6b590;background:#fff;border-radius:6px;color:#65472b;font-size:12px;font-weight:650}.actions .approve{background:#213c31;color:white;border-color:#213c31}.tool{margin:0 0 18px;border:1px solid var(--line);background:#fff;border-radius:8px}.tool summary{padding:11px 15px;cursor:pointer;font-size:12px;color:#46566d}.error{border-left:3px solid #a43434;padding:10px 15px;background:#fff1ef;color:#8a3131;margin-bottom:18px;font-size:13px;white-space:pre-wrap}footer{padding:16px 36px 20px;border-top:1px solid var(--line);background:#f4f5f7}.composer{display:flex;align-items:flex-end;gap:12px;max-width:850px;margin:auto;padding:12px;background:#fff;border:1px solid #ccd4de;border-radius:12px;box-shadow:0 3px 10px #18253606}textarea{flex:1;resize:vertical;min-height:52px;max-height:180px;border:0;outline:none;padding:8px;color:#202c3c;background:transparent}textarea:focus-visible{outline:2px solid #d2dce7;outline-offset:2px;border-radius:4px}.send{border:0;background:#20364e;color:white;padding:12px 20px;border-radius:7px;margin-bottom:3px}.hint{max-width:850px;margin:9px auto 0;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:10px}#notice{color:#a43434;font-size:12px;max-width:850px;margin:0 auto 8px}button:focus-visible{outline:3px solid #b67a48;outline-offset:3px}@media(max-width:760px){aside{display:none}header{padding:0 20px}#feed{padding:24px 20px}footer{padding:12px 16px}.welcome{padding-top:25px}.welcome h1{font-size:33px}.hint{font-size:10px}.message.user{margin-left:5%}header small{max-width:230px;overflow:hidden;text-overflow:ellipsis}.send{padding:12px}#mobile-new{display:block!important}}@media(prefers-reduced-motion:reduce){#feed{scroll-behavior:auto}}
+
+aside{width:264px;padding:26px 20px;gap:22px;min-height:0}.brand b{font-size:23px}.history-section{flex:1;min-height:90px;display:flex;flex-direction:column}.chat-list{overflow:auto;min-height:0;flex:1;margin:0 -7px;padding:0 7px}.chat-row{display:block;width:100%;padding:11px 12px;margin:4px 0;text-align:left;border:1px solid transparent;border-radius:8px;color:#c8d3e0;background:transparent}.chat-row:hover{background:#24374d}.chat-row.selected{background:#2d435b;border-color:#45617f;color:#fff}.chat-row .chat-name{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:550}.chat-row .chat-info{display:block;font-size:10px;color:#9bb0c6;margin-top:5px}.chat-row .needs-approval{color:#edba79}.sidebar-bottom{font-size:11px;margin-top:0}.sidebar-bottom p{margin:0 0 7px}.header-name{min-width:0;flex:1}#chat-title{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.header-actions{display:flex;gap:6px}.header-actions button,#history-toggle{border:1px solid var(--line);background:#fff;border-radius:6px;padding:7px 10px;color:#526075;font-size:12px}.header-actions .delete{color:#9c443c}#history-toggle{display:none}dialog{border:1px solid #d8dfe7;border-radius:14px;box-shadow:0 20px 80px #18253635;padding:28px;width:min(440px,calc(100vw - 32px));color:#202c3c}dialog::backdrop{background:#17253666}dialog h2{font-size:21px;margin:0 0 12px;letter-spacing:-.02em}dialog p{color:var(--muted);font-size:14px;line-height:1.6}dialog label{font-size:13px;display:block;margin-top:20px}dialog input{display:block;width:100%;font:inherit;padding:11px;border:1px solid #b9c6d4;border-radius:7px;margin:8px 0 20px}dialog .dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:22px}dialog button{border:1px solid #cbd4df;background:white;color:#35465d;padding:9px 16px;border-radius:7px;font:inherit;font-size:13px}dialog button.primary{background:#20364e;color:white;border-color:#20364e}dialog button.danger{background:#a53c36;color:white;border-color:#a53c36}.dialog-error{color:#a43434;font-size:12px}.empty-list{color:#9bacc0;font-size:12px}#history-close{display:none}@media(max-width:760px){#history-toggle{display:block}header{padding:12px 16px;min-height:83px;height:auto;flex-wrap:wrap;gap:8px}.header-name{min-width:140px}.header-actions{margin-left:auto}.status{font-size:11px}.header-actions button{font-size:11px;padding:6px 8px}aside.open{display:flex;position:fixed;inset:0 auto 0 0;z-index:5;box-shadow:0 0 0 100vmax #17253688;width:280px}#history-close{display:block;align-self:flex-end;background:transparent;color:white;border:1px solid #526479;border-radius:5px;padding:5px 9px}.sidebar-bottom{font-size:11px}}@media(min-width:761px){#history-close{display:none}}
 </style>
 </head>
 <body>
-<aside><div class="brand">JASMINE / LAB<b>Jasmine's<br>Agent</b></div><div class="aside-note">A small agent.<br>A loop you can understand.</div><button class="new" id="new-chat">＋ New chat</button><div><div class="side-label">Your harness</div><div class="side-row">One tool <span>bash</span></div><div class="side-row">Commands <span>You approve</span></div><div class="side-row">Shell timeout <span>60 seconds</span></div></div><div class="sidebar-bottom">AI in Research · Week 2<br>Runs on your computer. Messages and approved command output go to your model provider.</div></aside>
-<main><header><div><strong>Research workspace</strong><small id="model">Connecting to your harness…</small></div><button id="mobile-new" style="display:none" type="button">New chat</button><div class="status" role="status"><span class="dot"></span><span id="status">Connecting</span></div></header>
+<aside aria-label="Chat history" id="sidebar">
+<button id="history-close" aria-label="Close chat history" type="button">Close ✕</button>
+<div class="brand">JASMINE / LAB<b>Jasmine's<br>Agent</b></div>
+<button class="new" id="new-chat" type="button">＋ New chat</button>
+<section class="history-section"><div class="side-label">Saved chats</div><nav class="chat-list" id="chat-list" aria-label="Saved chats"></nav></section>
+<div class="sidebar-bottom"><p>One tool · Your approval · 60-second limit</p><p>Chat history is saved on this computer.</p>Messages and approved command output go to your model provider.</div>
+</aside>
+<main>
+<header><button id="history-toggle" aria-label="Show chat history" aria-expanded="false" type="button">☰ Chats</button><div class="header-name"><strong id="chat-title">Jasmine's Agent</strong><small id="model">Connecting to your harness…</small></div><div class="header-actions"><button id="rename-chat" type="button" disabled>Rename</button><button id="delete-chat" class="delete" type="button" disabled>Delete</button></div><div class="status" role="status"><span class="dot"></span><span id="status">Connecting</span></div></header>
 <div id="feed"><div class="stream" id="stream"><section class="welcome" id="welcome"><div class="eyebrow">Your agent, one step at a time</div><h1>What shall we<br>work on?</h1><p>Ask a question or give your agent a task. When it needs a shell command, you’ll see the command here and decide whether to run it.</p><div class="suggestions"><button type="button">What files are in this folder?</button><button type="button">Run Write-Output hello using bash.</button><button type="button">Explain how your agent loop works.</button></div></section></div></div>
-<footer><div id="notice" role="alert"></div><form class="composer" id="form"><textarea id="prompt" aria-label="Message your agent" placeholder="Message your agent…" maxlength="8000" rows="2" required></textarea><button class="send" id="send" type="submit">Send ↗</button></form><div class="hint"><span>Enter to send · Shift+Enter for a new line</span><span>Commands run only after approval</span></div></footer></main>
+<footer><div id="notice" role="alert"></div><form class="composer" id="form"><textarea id="prompt" aria-label="Message your agent" placeholder="Message your agent…" maxlength="8000" rows="2" required></textarea><button class="send" id="send" type="submit" disabled>Send ↗</button></form><div class="hint"><span>Enter to send · Shift+Enter for a new line</span><span>Chats save automatically on this computer</span></div></footer>
+</main>
+<dialog id="rename-dialog"><form id="rename-form"><h2>Rename chat</h2><label for="chat-name">Chat name</label><input id="chat-name" maxlength="100" required autocomplete="off"><div id="rename-error" class="dialog-error" role="alert"></div><div class="dialog-actions"><button type="button" data-close="rename-dialog">Cancel</button><button class="primary" type="submit">Save name</button></div></form></dialog>
+<dialog id="delete-dialog"><form id="delete-form"><h2>Delete this chat?</h2><p id="delete-description"></p><p>This removes its saved messages and command output from this app. This cannot be undone.</p><div id="delete-error" class="dialog-error" role="alert"></div><div class="dialog-actions"><button type="button" data-close="delete-dialog" autofocus>Cancel</button><button class="danger" type="submit">Delete chat</button></div></form></dialog>
 <script>
-const token=document.querySelector('meta[name="chat-token"]').content;
-const stream=document.querySelector('#stream'),feed=document.querySelector('#feed'),prompt=document.querySelector('#prompt'),send=document.querySelector('#send'),notice=document.querySelector('#notice');
-let cursor=0,busy=false,posting=false,resetting=false;const approvals=new Map();
-function element(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node}
-async function request(path,body){const response=await fetch(path,{method:body===undefined?'GET':'POST',headers:{'Content-Type':'application/json','X-Chat-Token':token},body:body===undefined?undefined:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw new Error(data.error||'Request failed');return data}
-function clear(){stream.replaceChildren();approvals.clear();cursor=0}
-function render(event){document.querySelector('#welcome')?.remove();if(event.type==='user'||event.type==='assistant'){const card=element('article','message '+event.type);card.append(element('div','label',event.type==='user'?'You':"Jasmine's Agent"),element('div','text',event.text));stream.append(card)}
-else if(event.type==='usage')stream.append(element('div','usage',event.text+(event.model?'\n'+event.model:'')));
-else if(event.type==='approval'){const card=element('section','command'),heading=element('div','command-title'),badge=element('span','', 'Waiting for approval');heading.append(element('span','','bash · Proposed command'),badge);card.append(heading,element('pre','',event.command));const actions=element('div','actions');for(const [label,approved] of [['Approve',true],['Deny',false]]){const button=element('button',approved?'approve':'',label);button.type='button';button.addEventListener('click',async()=>{for(const child of actions.children)child.disabled=true;try{await request('/approve',{id:event.id,approved});notice.textContent=''}catch(error){notice.textContent=error.message;for(const child of actions.children)child.disabled=false}});actions.append(button)}card.append(actions);approvals.set(event.id,{badge,actions});stream.append(card)}
-else if(event.type==='decision'){const card=approvals.get(event.id);if(card){card.badge.textContent=event.approved?'Approved':'Denied';for(const child of card.actions.children)child.disabled=true}}
-else if(event.type==='tool_result'){const result=event.result,card=element('details','tool');card.open=true;let title=result.declined?'Command declined':result.error?'Tool error':'Command output · exit '+result.exit_code;if(result.timed_out)title+=' · timed out';if(result.truncated)title+=' · truncated';card.append(element('summary','',title));const output=[result.stdout,result.stderr,result.error].filter(Boolean).join('\n');card.append(element('pre','',output||'(No output)'));stream.append(card)}
-else if(event.type==='error')stream.append(element('div','error',event.text));}
-async function poll(){try{if(!resetting){const data=await request('/events?after='+cursor),nearBottom=feed.scrollHeight-feed.scrollTop-feed.clientHeight<120;if(data.reset)clear();for(const event of data.events)render(event);cursor=data.cursor;busy=data.busy;send.disabled=busy||posting;document.querySelector('#new-chat').disabled=busy;document.querySelector('#mobile-new').disabled=busy;document.querySelector('#model').textContent=data.model;document.querySelector('#status').textContent=data.pending?'Needs your approval':busy?'Working':'Ready';if(nearBottom||data.pending)feed.scrollTop=feed.scrollHeight}}catch(error){document.querySelector('#status').textContent='Disconnected';notice.textContent=error.message}setTimeout(poll,busy?450:1200)}
-document.querySelector('#form').addEventListener('submit',async event=>{event.preventDefault();const text=prompt.value.trim();if(!text||busy||posting)return;posting=true;send.disabled=true;try{await request('/message',{prompt:text});prompt.value='';busy=true;notice.textContent=''}catch(error){notice.textContent=error.message}finally{posting=false;send.disabled=busy;prompt.focus()}});
-prompt.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();document.querySelector('#form').requestSubmit()}});
-for(const button of document.querySelectorAll('.suggestions button'))button.addEventListener('click',()=>{prompt.value=button.textContent;prompt.focus()});
-async function newChat(){if(busy)return;resetting=true;try{await request('/reset',{});clear();notice.textContent='';prompt.focus()}catch(error){notice.textContent=error.message}finally{resetting=false}}
-document.querySelector('#new-chat').addEventListener('click',newChat);document.querySelector('#mobile-new').addEventListener('click',newChat);poll();
+const token = document.querySelector('meta[name="chat-token"]').content;
+const stream = document.querySelector('#stream'), feed = document.querySelector('#feed');
+const prompt = document.querySelector('#prompt'), send = document.querySelector('#send'), notice = document.querySelector('#notice');
+const welcome = document.querySelector('#welcome').cloneNode(true);
+const approvals = new Map(), drafts = new Map();
+let chats = [], active = null, cursor = 0, version = 0, busy = false, posting = false, changing = false, listSignature = '';
+let dialogChat = null, eventRequest = 0;
+
+function element(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+function savedSelection() { try { return localStorage.getItem('jasmines-agent-chat'); } catch { return null; } }
+function rememberSelection() { try { localStorage.setItem('jasmines-agent-chat', active || ''); } catch {} }
+async function request(path, body) {
+  const response = await fetch(path, { method: body === undefined ? 'GET' : 'POST', headers: {'Content-Type':'application/json','X-Chat-Token':token}, body: body === undefined ? undefined : JSON.stringify(body) });
+  const data = await response.json();
+  if (!response.ok) { const error = new Error(data.error || 'Request failed'); error.status = response.status; throw error; }
+  return data;
+}
+function sidebar(open) {
+  document.querySelector('#sidebar').classList.toggle('open', open);
+  document.querySelector('#history-toggle').setAttribute('aria-expanded', String(open));
+}
+function controls(chat) {
+  busy = Boolean(chat?.busy);
+  send.disabled = !chat || busy || posting || changing;
+  document.querySelector('#new-chat').disabled = changing;
+  document.querySelector('#rename-chat').disabled = !chat || changing;
+  document.querySelector('#delete-chat').disabled = !chat || busy || changing;
+  document.querySelector('#chat-title').textContent = chat?.title || "Jasmine's Agent";
+  document.querySelector('#status').textContent = chat?.pending ? 'Needs your approval' : busy ? 'Working' : 'Ready';
+}
+function renderList() {
+  const signature = JSON.stringify([active, chats]);
+  if (signature === listSignature) return;
+  listSignature = signature;
+  const list = document.querySelector('#chat-list');
+  list.replaceChildren();
+  for (const chat of chats) {
+    const button = element('button', 'chat-row' + (chat.id === active ? ' selected' : ''));
+    button.type = 'button'; button.title = chat.title; button.setAttribute('aria-current', chat.id === active ? 'page' : 'false');
+    button.append(element('span', 'chat-name', chat.title));
+    const info = chat.pending ? 'Needs your approval' : chat.busy ? 'Working…' : new Date(chat.updated_at).toLocaleDateString(undefined, {month:'short',day:'numeric'});
+    button.append(element('span', 'chat-info' + (chat.pending ? ' needs-approval' : ''), info));
+    button.addEventListener('click', () => selectChat(chat.id));
+    list.append(button);
+  }
+  if (!chats.length) list.append(element('p', 'empty-list', 'No saved chats yet.'));
+}
+function selectChat(id) {
+  if (changing || id === active) { sidebar(false); return; }
+  if (active) drafts.set(active, prompt.value);
+  active = id; version++; cursor = 0; approvals.clear();
+  stream.replaceChildren(welcome.cloneNode(true));
+  prompt.value = drafts.get(id) || ''; notice.textContent = '';
+  rememberSelection(); renderList(); controls(chats.find(chat => chat.id === id)); sidebar(false);
+  loadEvents().catch(error => { notice.textContent = error.message; });
+}
+function render(event, chatId) {
+  document.querySelector('#welcome')?.remove();
+  if (event.type === 'user' || event.type === 'assistant') {
+    const card = element('article', 'message ' + event.type);
+    card.append(element('div','label',event.type === 'user' ? 'You' : "Jasmine's Agent"), element('div','text',event.text)); stream.append(card);
+  } else if (event.type === 'usage') {
+    stream.append(element('div','usage',event.text + (event.model ? '\n' + event.model : '')));
+  } else if (event.type === 'approval') {
+    const card = element('section','command'), heading = element('div','command-title'), badge = element('span','','Waiting for approval');
+    heading.append(element('span','','bash · Proposed command'), badge); card.append(heading,element('pre','',event.command));
+    const actions = element('div','actions');
+    for (const [label, approved] of [['Approve',true],['Deny',false]]) {
+      const button = element('button',approved ? 'approve' : '',label); button.type = 'button';
+      button.addEventListener('click',async () => {
+        for (const child of actions.children) child.disabled = true;
+        try { await request('/approve',{chat_id:chatId,id:event.id,approved}); notice.textContent = ''; }
+        catch (error) { notice.textContent = error.message; }
+      }); actions.append(button);
+    }
+    card.append(actions); approvals.set(event.id,{badge,actions}); stream.append(card);
+  } else if (event.type === 'decision') {
+    const card = approvals.get(event.id);
+    if (card) { card.badge.textContent = event.interrupted ? 'Interrupted' : event.approved ? 'Approved' : 'Denied'; for (const child of card.actions.children) child.disabled = true; }
+  } else if (event.type === 'tool_result') {
+    const result = event.result, card = element('details','tool'); card.open = true;
+    let title = result.declined ? 'Command declined' : result.error ? 'Tool error' : 'Command output · exit ' + result.exit_code;
+    if (result.timed_out) title += ' · timed out'; if (result.truncated) title += ' · truncated';
+    card.append(element('summary','',title),element('pre','',[result.stdout,result.stderr,result.error].filter(Boolean).join('\n') || '(No output)')); stream.append(card);
+  } else if (event.type === 'error') stream.append(element('div','error',event.text));
+}
+async function loadEvents() {
+  if (!active || changing) return;
+  const selected = active, selectedVersion = version, ticket = ++eventRequest;
+  const data = await request('/events?chat=' + encodeURIComponent(selected) + '&after=' + cursor);
+  if (active !== selected || version !== selectedVersion || changing || ticket !== eventRequest) return;
+  const nearBottom = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 120;
+  if (data.reset) { stream.replaceChildren(welcome.cloneNode(true)); approvals.clear(); }
+  for (const event of data.events) render(event, selected);
+  cursor = data.cursor; controls(data);
+  for (const [id, card] of approvals) for (const child of card.actions.children) child.disabled = id !== data.pending;
+  if (nearBottom || data.pending) feed.scrollTop = feed.scrollHeight;
+}
+async function refreshChats() {
+  const data = await request('/chats'); chats = data.chats; renderList();
+  document.querySelector('#model').textContent = data.model;
+  return data;
+}
+async function poll() {
+  try {
+    if (!changing) {
+      await refreshChats();
+      if (!chats.length) { await newChat(); return setTimeout(poll, 1200); }
+      if (!active || !chats.some(chat => chat.id === active)) {
+        const preferred = savedSelection();
+        selectChat(chats.find(chat => chat.id === preferred)?.id || chats[0]?.id || null);
+      }
+      await loadEvents();
+    }
+  } catch (error) {
+    if (error.status === 404) { active = null; cursor = 0; version++; }
+    else { document.querySelector('#status').textContent = 'Disconnected'; notice.textContent = error.message; }
+  }
+  setTimeout(poll,busy ? 450 : 1200);
+}
+async function newChat() {
+  if (changing) return;
+  changing = true; controls(chats.find(chat => chat.id === active));
+  try {
+    const data = await request('/chats/new',{}); await refreshChats();
+    changing = false; selectChat(data.chat.id); prompt.focus();
+  } catch (error) { notice.textContent = error.message; }
+  finally { changing = false; controls(chats.find(chat => chat.id === active)); }
+}
+
+document.querySelector('#form').addEventListener('submit',async event => {
+  event.preventDefault(); const text = prompt.value.trim(); if (!text || !active || busy || posting || changing) return;
+  const selected = active; posting = true; send.disabled = true;
+  try {
+    await request('/message',{chat_id:selected,prompt:text});
+    drafts.delete(selected); if (active === selected) prompt.value = '';
+    await refreshChats(); await loadEvents(); notice.textContent = '';
+  } catch (error) { notice.textContent = error.message; }
+  finally { posting = false; controls(chats.find(chat => chat.id === active)); prompt.focus(); }
+});
+prompt.addEventListener('keydown',event => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); document.querySelector('#form').requestSubmit(); } });
+stream.addEventListener('click',event => { const button = event.target.closest('.suggestions button'); if (button) { prompt.value = button.textContent; prompt.focus(); } });
+document.querySelector('#new-chat').addEventListener('click',newChat);
+document.querySelector('#history-toggle').addEventListener('click',() => sidebar(true));
+document.querySelector('#history-close').addEventListener('click',() => sidebar(false));
+document.addEventListener('keydown',event => { if (event.key === 'Escape') sidebar(false); });
+for (const button of document.querySelectorAll('[data-close]')) button.addEventListener('click',() => document.getElementById(button.dataset.close).close());
+document.querySelector('#rename-chat').addEventListener('click',() => {
+  const chat = chats.find(chat => chat.id === active); if (!chat) return; dialogChat = chat.id;
+  document.querySelector('#chat-name').value = chat.title; document.querySelector('#rename-error').textContent = '';
+  document.querySelector('#rename-dialog').showModal(); document.querySelector('#chat-name').select();
+});
+document.querySelector('#rename-form').addEventListener('submit',async event => {
+  event.preventDefault(); const button = event.submitter; button.disabled = true;
+  try { await request('/chats/rename',{chat_id:dialogChat,title:document.querySelector('#chat-name').value}); await refreshChats(); controls(chats.find(chat => chat.id === active)); document.querySelector('#rename-dialog').close(); }
+  catch (error) { document.querySelector('#rename-error').textContent = error.message; }
+  finally { button.disabled = false; }
+});
+document.querySelector('#delete-chat').addEventListener('click',() => {
+  const chat = chats.find(chat => chat.id === active); if (!chat || chat.busy) return; dialogChat = chat.id;
+  document.querySelector('#delete-description').textContent = 'Delete “' + chat.title + '”?'; document.querySelector('#delete-error').textContent = '';
+  document.querySelector('#delete-dialog').showModal();
+});
+document.querySelector('#delete-form').addEventListener('submit',async event => {
+  event.preventDefault(); const button = event.submitter; button.disabled = true; changing = true;
+  try {
+    const removed = dialogChat; await request('/chats/delete',{chat_id:removed}); drafts.delete(removed);
+    await refreshChats(); document.querySelector('#delete-dialog').close(); changing = false;
+    if (!chats.length) await newChat(); else if (active === removed) selectChat(chats[0].id);
+  } catch (error) { document.querySelector('#delete-error').textContent = error.message; }
+  finally { changing = false; button.disabled = false; controls(chats.find(chat => chat.id === active)); }
+});
+poll();
 </script>
 </body></html>

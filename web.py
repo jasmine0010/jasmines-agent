@@ -1,86 +1,15 @@
-"""A local, single-chat web interface around agent.run_turn (no frameworks)."""
+"""A local web interface with saved, independent chats (no frameworks)."""
 
 import argparse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
 import secrets
-import threading
+import sqlite3
 from urllib.parse import parse_qs, urlsplit
 
-from agent import ROOT, conversation, run_turn
-
-
-class Chat:
-    def __init__(self):
-        self.lock = threading.Lock()
-        self.messages = conversation()
-        self.events = []
-        self.busy = False
-        self.pending = None
-
-    def emit(self, event):
-        with self.lock:
-            self.events.append(event)
-
-    def approve(self, command):
-        pending = {"id": secrets.token_hex(12), "command": command, "ready": threading.Event(), "decision": False}
-        with self.lock:
-            self.pending = pending
-            self.events.append({"type": "approval", "id": pending["id"], "command": command})
-        pending["ready"].wait()  # The model worker pauses; HTTP requests remain responsive.
-        with self.lock:
-            self.pending = None
-        return pending["decision"]
-
-    def work(self, prompt):
-        try:
-            run_turn(self.messages, prompt, self.approve, self.emit)
-        except RuntimeError as error:
-            self.emit({"type": "error", "text": str(error)})
-        except Exception as error:
-            # Do not expose tracebacks, environment variables, or API credentials.
-            self.emit({"type": "error", "text": "The turn failed. Start a new chat and try again."})
-            print("Turn failed:", type(error).__name__)
-        finally:
-            with self.lock:
-                self.busy = False
-
-    def start(self, prompt):
-        with self.lock:
-            if self.busy:
-                return False
-            self.busy = True
-            self.events.append({"type": "user", "text": prompt})
-        threading.Thread(target=self.work, args=(prompt,), daemon=True).start()
-        return True
-
-    def decide(self, approval_id, approved):
-        with self.lock:
-            pending = self.pending
-            if not pending or pending["id"] != approval_id or pending["ready"].is_set():
-                return False
-            pending["decision"] = approved
-            self.events.append({"type": "decision", "id": approval_id, "approved": approved})
-            pending["ready"].set()
-        return True
-
-    def reset(self):
-        with self.lock:
-            if self.busy:
-                return False
-            self.messages = conversation()
-            self.events = []
-        return True
-
-    def snapshot(self, after):
-        with self.lock:
-            reset = after > len(self.events)
-            return {
-                "events": self.events[0 if reset else after:], "cursor": len(self.events),
-                "busy": self.busy, "reset": reset, "model": os.environ.get("MODEL", "not configured"),
-                "pending": self.pending["id"] if self.pending else None,
-            }
+from agent import ROOT
+from history import ChatHistory
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -101,6 +30,9 @@ class Handler(BaseHTTPRequestHandler):
     def valid_host(self):
         return self.headers.get("Host") == self.server.authority
 
+    def authenticated(self):
+        return self.headers.get("X-Chat-Token") == self.server.api_token
+
     def do_GET(self):
         if not self.valid_host():
             return self.reply(403, {"error": "Invalid host."})
@@ -108,19 +40,25 @@ class Handler(BaseHTTPRequestHandler):
         if target.path == "/":
             html = (ROOT / "index.html").read_text(encoding="utf-8-sig")
             return self.reply(200, html.replace("__API_TOKEN__", self.server.api_token), "text/html; charset=utf-8")
-        if target.path == "/events":
-            if self.headers.get("X-Chat-Token") != self.server.api_token:
-                return self.reply(403, {"error": "Refresh the page to reconnect."})
-            try:
-                after = max(0, int(parse_qs(target.query).get("after", ["0"])[0]))
-            except ValueError:
-                return self.reply(400, {"error": "Invalid event cursor."})
-            return self.reply(200, self.server.chat.snapshot(after))
-        return self.reply(404, {"error": "Not found."})
+        if target.path not in {"/chats", "/events"}:
+            return self.reply(404, {"error": "Not found."})
+        if not self.authenticated():
+            return self.reply(403, {"error": "Refresh the page to reconnect."})
+        if target.path == "/chats":
+            return self.reply(200, {"chats": self.server.history.summaries(), "model": os.environ.get("MODEL", "not configured")})
+        query = parse_qs(target.query)
+        chat = self.server.history.get(query.get("chat", [None])[0])
+        if not chat:
+            return self.reply(404, {"error": "This chat no longer exists."})
+        try:
+            after = max(0, int(query.get("after", ["0"])[0]))
+        except ValueError:
+            return self.reply(400, {"error": "Invalid event cursor."})
+        return self.reply(200, chat.snapshot(after))
 
     def do_POST(self):
         origin = "http://" + self.server.authority
-        if not self.valid_host() or self.headers.get("Origin") != origin or self.headers.get("X-Chat-Token") != self.server.api_token:
+        if not self.valid_host() or self.headers.get("Origin") != origin or not self.authenticated():
             return self.reply(403, {"error": "Refresh this local page before trying again."})
         if self.headers.get_content_type() != "application/json":
             return self.reply(415, {"error": "Expected JSON."})
@@ -133,7 +71,20 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError
         except (ValueError, UnicodeError):
             return self.reply(400, {"error": "Invalid JSON request."})
-        chat = self.server.chat
+        try:
+            self.dispatch(body)
+        except (OSError, sqlite3.Error):
+            self.reply(503, {"error": "Could not save chat history. Check free disk space and folder permissions."})
+
+    def dispatch(self, body):
+        history = self.server.history
+        if self.path == "/chats/new":
+            return self.reply(200, {"chat": history.create().summary()})
+        if self.path not in {"/message", "/approve", "/chats/rename", "/chats/delete"}:
+            return self.reply(404, {"error": "Not found."})
+        chat = history.get(body.get("chat_id"))
+        if not chat:
+            return self.reply(404, {"error": "This chat no longer exists."})
         if self.path == "/message":
             prompt = body.get("prompt")
             if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 8000:
@@ -143,18 +94,22 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(body.get("approved"), bool):
                 return self.reply(400, {"error": "Choose Approve or Deny."})
             ok = chat.decide(body.get("id"), body["approved"])
-        elif self.path == "/reset":
-            ok = chat.reset()
+        elif self.path == "/chats/rename":
+            title = body.get("title")
+            if not isinstance(title, str) or not title.strip() or len(title.strip()) > 100:
+                return self.reply(400, {"error": "Enter a title of 1–100 characters."})
+            ok = history.rename(chat.id, title.strip())
         else:
-            return self.reply(404, {"error": "Not found."})
-        self.reply(200 if ok else 409, {"ok": ok, "error": None if ok else "Chat is busy or this approval has already been answered."})
+            ok = history.delete(chat.id)
+        self.reply(200 if ok else 409, {"ok": ok, "error": None if ok else "Wait for this chat to finish, or check whether the command was already answered."})
 
 
-def create_server(port=8765, chat=None):
+def create_server(port=8765, history=None, history_path=None):
+    history = history or ChatHistory(history_path or ROOT / "history" / "chats.sqlite3")
     server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     server.authority = "127.0.0.1:" + str(server.server_port)
     server.api_token = secrets.token_urlsafe(32)
-    server.chat = chat or Chat()
+    server.history = history
     return server
 
 
@@ -164,7 +119,7 @@ def main():
     args = parser.parse_args()
     with create_server(args.port) as server:
         print("Open http://" + server.authority, flush=True)
-        print("This server shares one chat between its tabs. Press Ctrl+C to stop.", flush=True)
+        print("Chat history is saved locally. Press Ctrl+C to stop.", flush=True)
         try:
             server.serve_forever()
         except KeyboardInterrupt:
