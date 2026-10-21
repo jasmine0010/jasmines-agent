@@ -56,7 +56,7 @@ The harness is released under the MIT license, and its installation skill is pre
 
 The installation workflow passed in a fresh temporary local clone: locked dependency setup, configuration via inherited environment settings, all 12 offline tests, localhost web launch, approved listing, denial, deliberate failed-command recovery in an independent chat, token usage, saved-chat rename/reopening, and the credential scan. Receipts are in `validation/live-checks.json` and `validation/fresh-install.json`. The temporary clone and its test server were removed.
 
-The owner authorized publication and the Week 2 submission on October 21, 2026. This repository publishes the tested Week 2 version with one bash tool. The Week 3 plugin extension is maintained separately and is outside this release. Public-clone checks and the class submission are recorded when completed.
+The owner authorized publication and the Week 2 submission on October 21, 2026. This repository publishes the tested Week 2 version with one bash tool. The Week 3 plugin extension is maintained separately and is outside this release. A fresh clone from the public URL passed locked dependency setup, all 12 offline tests, and localhost web startup. See validation/public-install.json. Live model checks passed before publication on the same Week 2 implementation; the free quota was exhausted during the public-clone check. The installation skill is submitted separately to the class repository.
 
 ## Week 2 comparison check (October 21, 2026)
 

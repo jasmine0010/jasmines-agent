@@ -1,0 +1,11 @@
+{
+  "public_clone_url": "https://github.com/jasmine0010/jasmines-agent",
+  "locked_setup": true,
+  "offline_tests_passed": 12,
+  "documented_web_launch": true,
+  "localhost_page_http_status": 200,
+  "only_builtin_bash_tool": true,
+  "private_env_copied": false,
+  "model_requests_made": 0,
+  "live_checks": "Previously passed on the same Week 2 implementation; not repeated because free model quota is exhausted."
+}
