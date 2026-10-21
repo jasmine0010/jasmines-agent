@@ -48,11 +48,13 @@ Edit `system_prompt.md` to change the assistant's instructions. The terminal ver
 
 ## Status
 
-The student explained the agent loop correctly, including why each call resends the conversation. OpenRouter plain chat, conversation memory, tool-call format, and a full model/tool/model turn are verified. The chosen local web interface is implemented and running; browser tests confirmed that Approve executes the displayed command and Deny sends a refusal back to the model without execution. Input, cached-input, and output usage appear per API call.
+The loop-understanding checkpoint is complete. The local web interface includes saved conversations, rename/delete controls, and default sans-serif typography throughout. Windows checks verified approval, denial, saved-chat recovery across a server restart, and conversation context after reopening.
 
-All 12 offline tests pass. Coverage includes chat persistence, renaming, deletion after reopening storage, recovery without command execution, independent approvals, invalid arguments, the round limit, shell failures/timeouts/output limits, and web request protection. Browser checks verified chat creation, switching, renaming, refresh, and a full server restart; a follow-up model request successfully used its saved conversation context.
+All 12 offline tests pass. Four live model checks also passed: synthetic file listing, two separately approved commands in sequential tool rounds, a real missing-program failure explained by the model, and denial without shell execution. Every API call reported token usage. The filesystem checks used a disposable fixture rather than scanning the home directory.
 
-The student requested the Jasmine's Agent name and persistent chats with rename/delete controls; these are implemented. The updated interface is available for the instructor's interface-review checkpoint. Next: finish the assignment's interactive test checklist, add a license, review and approve publishing, then publish the harness and prepare and test its installation skill and submission PR. Nothing has been published and no submission PR exists yet.
+An MIT license and the installation-skill draft are prepared locally. The skill is in the class checkout at `week-2/submissions/jasmine0010/SKILL.md`, on the local `week-2-jasmine0010` branch. Publication checks found no configured API key or recognized access-token pattern in tracked files or Git history; private `.env`, chat history, and workspace files remain ignored.
+
+The user has explicitly withheld permission to push, publish, or submit. No remote repository has been created, no push has been made, and no submission PR exists. Next: complete the fresh local-clone installation check, then hold for publication approval. The instructor's public-clone check can only be completed after the repository is published with that approval.
 
 ## Week 2 comparison check (October 21, 2026)
 
@@ -60,7 +62,7 @@ Reviewed the nine open Week 2 installation-skill submissions (class PRs #9–#17
 
 All 12 offline checks passed both in this working copy and in a fresh temporary local clone without the private .env or chat database. Testing was on Windows; peer applications were inspected rather than executed. This comparison is not an instructor grade or a cross-platform runtime certification.
 
-The submission is still unfinished: there is no license, public harness repository, installation skill at week-2/submissions/jasmine0010/SKILL.md, or Week 2 PR. Finish the remaining live multi-command / failed-command checks and review publication contents, then obtain the publishing and PR checkpoints required by the instructor guide.
+The implementation matches the functional requirements. The license and installation skill have now been prepared locally and the remaining live loop checks have passed. Public-repository and submission verification remain pending the user's explicit publication approval.
 
 Peer code snapshots:
 - https://github.com/WenyuZhang2001/ai-study-agent/blob/991acd66f7811150ed88bbcc539fddd2957fc5d8/agent.py
@@ -75,12 +77,19 @@ uv run python -m unittest discover -s tests -v
 
 The tests use synthetic data and a mock model; they never contact a provider or require an API key.
 
-## This computer
+## Optional live and publication checks
 
-uv: `C:\Users\Jasmi\.local\bin\uv.exe`
+These commands use the locally configured key; live checks contact the model provider and approve only exact synthetic test commands:
 
-GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe`
+```sh
+uv run --env-file .env python tests/live_checks.py
+uv run --env-file .env python tests/check_publication.py
+```
 
-Class checkout: `C:\Users\Jasmi\ai-in-research-homework`
+Receipts are under `validation/`. The publication check reports filenames and counts, never credential values. It checks tracked files and Git history for the configured API key, recognized token patterns, and accidentally tracked runtime data.
+
+## License
+
+MIT; see `LICENSE`.
 
 Instructor guide: https://github.com/huangzesen/ai-in-research-homework/blob/main/.agents/skills/build-a-harness/SKILL.md

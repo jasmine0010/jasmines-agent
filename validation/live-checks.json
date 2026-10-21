@@ -1,0 +1,344 @@
+{
+  "checked_at": "2026-10-21T08:34:04.553533+00:00",
+  "platform": "Windows",
+  "scope": "Synthetic fixture; no home-directory scan; exact test-command approvals only.",
+  "checks": [
+    {
+      "name": "file_listing",
+      "model_calls": [
+        {
+          "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "usage": {
+            "prompt_tokens": 423,
+            "completion_tokens": 446,
+            "total_tokens": 869,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 479,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 2
+        },
+        {
+          "model": "nvidia/nemotron-3.5-lightning:free",
+          "usage": {
+            "prompt_tokens": 926,
+            "completion_tokens": 132,
+            "total_tokens": 1058,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 124,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 4
+        }
+      ],
+      "decisions": [
+        {
+          "command": "Get-ChildItem -Name",
+          "approved": true
+        }
+      ],
+      "outputs": [
+        {
+          "stdout": "alpha.txt\r\nbeta.csv\r\n",
+          "stderr": "",
+          "exit_code": 0,
+          "timed_out": false,
+          "truncated": false
+        }
+      ],
+      "answer": "alpha.txt  \nbeta.csv"
+    },
+    {
+      "name": "sequential_commands",
+      "model_calls": [
+        {
+          "model": "minimax/minimax-m3.1-flash:free",
+          "usage": {
+            "prompt_tokens": 598,
+            "completion_tokens": 40,
+            "total_tokens": 638,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 2
+        },
+        {
+          "model": "poolside/laguna-s-2.1:free",
+          "usage": {
+            "prompt_tokens": 361,
+            "completion_tokens": 38,
+            "total_tokens": 399,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 4
+        },
+        {
+          "model": "nvidia/nemotron-3.5-super-vl:free",
+          "usage": {
+            "prompt_tokens": 635,
+            "completion_tokens": 131,
+            "total_tokens": 766,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 98,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 6
+        }
+      ],
+      "decisions": [
+        {
+          "command": "Write-Output first-step",
+          "approved": true
+        },
+        {
+          "command": "Write-Output second-step",
+          "approved": true
+        }
+      ],
+      "outputs": [
+        {
+          "stdout": "first-step\r\n",
+          "stderr": "",
+          "exit_code": 0,
+          "timed_out": false,
+          "truncated": false
+        },
+        {
+          "stdout": "second-step\r\n",
+          "stderr": "",
+          "exit_code": 0,
+          "timed_out": false,
+          "truncated": false
+        }
+      ],
+      "answer": "Both commands have completed successfully.\n\n- Output of `Write-Output first-step`: first-step\n- Output of `Write-Output second-step`: second-step"
+    },
+    {
+      "name": "failed_command_recovery",
+      "model_calls": [
+        {
+          "model": "poolside/laguna-s-2.1:free",
+          "usage": {
+            "prompt_tokens": 265,
+            "completion_tokens": 23,
+            "total_tokens": 288,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 2
+        },
+        {
+          "model": "poolside/laguna-s-2.1:free",
+          "usage": {
+            "prompt_tokens": 385,
+            "completion_tokens": 102,
+            "total_tokens": 487,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 4
+        }
+      ],
+      "decisions": [
+        {
+          "command": "doesnotexist",
+          "approved": true
+        }
+      ],
+      "outputs": [
+        {
+          "stdout": "",
+          "stderr": "doesnotexist: The term 'doesnotexist' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\r\n",
+          "exit_code": 1,
+          "timed_out": false,
+          "truncated": false
+        }
+      ],
+      "answer": "The command failed because the program `doesnotexist` cannot be found. This is expected behavior \u2014 there is no executable, script, or cmdlet named `doesnotexist` available in the current environment. The shell looked for it as a cmdlet, function, or executable program, but none matched, so it returned an error indicating the name is not recognized. No files were modified and no software was installed; this was simply an intentional test of how the system handles a request to run a missing program."
+    },
+    {
+      "name": "denial",
+      "model_calls": [
+        {
+          "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "usage": {
+            "prompt_tokens": 417,
+            "completion_tokens": 180,
+            "total_tokens": 597,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 172,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 2
+        },
+        {
+          "model": "dots-studio/dots-3-note-preview:free",
+          "usage": {
+            "prompt_tokens": 369,
+            "completion_tokens": 206,
+            "total_tokens": 575,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 209,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "message_count": 4
+        }
+      ],
+      "decisions": [
+        {
+          "command": "Write-Output denied-test",
+          "approved": false
+        }
+      ],
+      "outputs": [
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "The user declined to run this command.",
+          "declined": true
+        }
+      ],
+      "answer": "\n\nI attempted to run the command `Write-Output denied-test` as requested, but the user declined to execute it. I'm respecting that decision and will not run any further commands."
+    }
+  ]
+}
