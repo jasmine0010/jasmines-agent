@@ -1,4 +1,4 @@
-# HelioPhysics Agent
+# Jasmine's Agent
 
 A small Python agent harness for the AI in Research week 2 homework. It calls an OpenAI-compatible Chat Completions API directly, maintains a conversation, and offers exactly one tool named `bash`. On Windows this tool runs PowerShell; on macOS and Linux it runs bash.
 

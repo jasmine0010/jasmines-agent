@@ -115,7 +115,7 @@ def terminal_emit(event):
 def main():
     messages = conversation()
     if sys.argv[1:] == ["--chat"]:
-        print("Chat with HelioPhysics Agent. Type /quit to finish.")
+        print("Chat with Jasmine's Agent. Type /quit to finish.")
         while True:
             try:
                 prompt = input("You: ").strip()

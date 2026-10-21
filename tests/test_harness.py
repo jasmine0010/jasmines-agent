@@ -107,7 +107,7 @@ class WebTests(unittest.TestCase):
     def test_local_page_and_request_protection(self):
         status, html = self.request("/")
         self.assertEqual(status, 200)
-        self.assertIn(b"HelioPhysics Agent", html)
+        self.assertIn(b"Jasmine's Agent", html)
         self.assertNotIn(b"__API_TOKEN__", html)
         self.assertEqual(self.request("/events", authenticated=False)[0], 403)
         self.assertEqual(self.request("/reset", {}, origin="https://example.com")[0], 403)
