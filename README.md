@@ -54,6 +54,19 @@ All 12 offline tests pass. Coverage includes chat persistence, renaming, deletio
 
 The student requested the Jasmine's Agent name and persistent chats with rename/delete controls; these are implemented. The updated interface is available for the instructor's interface-review checkpoint. Next: finish the assignment's interactive test checklist, add a license, review and approve publishing, then publish the harness and prepare and test its installation skill and submission PR. Nothing has been published and no submission PR exists yet.
 
+## Week 2 comparison check (October 21, 2026)
+
+Reviewed the nine open Week 2 installation-skill submissions (class PRs #9–#17), and inspected the core code of AI Study Agent, Research agent, and Pedro Agent at commits preceding their Week 2 PRs. Jasmine's Agent uses the same direct API / conversation / approved shell / tool-result loop, with the required token usage, timeout, and output limit. Saved chat history and rename/delete controls extend the assignment's basic requirements.
+
+All 12 offline checks passed both in this working copy and in a fresh temporary local clone without the private .env or chat database. Testing was on Windows; peer applications were inspected rather than executed. This comparison is not an instructor grade or a cross-platform runtime certification.
+
+The submission is still unfinished: there is no license, public harness repository, installation skill at week-2/submissions/jasmine0010/SKILL.md, or Week 2 PR. Finish the remaining live multi-command / failed-command checks and review publication contents, then obtain the publishing and PR checkpoints required by the instructor guide.
+
+Peer code snapshots:
+- https://github.com/WenyuZhang2001/ai-study-agent/blob/991acd66f7811150ed88bbcc539fddd2957fc5d8/agent.py
+- https://github.com/hleinweber/research-agent/blob/8228d8fe161152aa2e29391107d2e7a71ac72af9/agent.py
+- https://github.com/Caltz27/pedro-agent/blob/71964397106065588bcc1e6bcf8cd77ac0182358/agent.py
+
 ## Tests
 
 ```sh
