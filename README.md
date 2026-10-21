@@ -6,6 +6,18 @@ A small Python agent harness for the AI in Research week 2 homework. It calls an
 
 Install uv, copy `.env.example` to `.env`, and enter your own API key locally. Set `BASE_URL`, `API_KEY`, and `MODEL`. Never paste keys into chat or commit `.env`. The example uses OpenRouter's free model router; model availability and rate limits vary.
 
+## Run the web interface
+
+From this directory:
+
+```sh
+uv run --env-file .env python web.py
+```
+
+Open http://127.0.0.1:8765 in your browser. The server binds only to this computer. Each proposed command has Approve and Deny buttons; token counts and command results appear in the chat. Tabs share one conversation, and New chat clears it when no turn is running. Restarting the server clears the in-memory history. Press Ctrl+C in the server terminal to stop it.
+
+To use a different port: `uv run --env-file .env python web.py --port 8766`.
+
 ## Run the current terminal version
 
 From this directory:
@@ -26,11 +38,19 @@ Edit `system_prompt.md` to change the assistant's instructions. Conversation his
 
 ## Status
 
-OpenRouter is configured and verified. Plain chat, tool-call format, two-turn conversation memory, and one complete live model/tool/model turn passed. Local checks passed for approved execution, refusal without execution, failing commands, timeout, output limits, malformed arguments, and matching tool-call IDs.
+The student explained the agent loop correctly, including why each call resends the conversation. OpenRouter plain chat, conversation memory, tool-call format, and a full model/tool/model turn are verified. The chosen local web interface is implemented and running; browser tests confirmed that Approve executes the displayed command and Deny sends a refusal back to the model without execution. Input, cached-input, and output usage appear per API call.
 
-We are at the instructor's loop-understanding checkpoint: the student should explain `run_turn` in their own words before proceeding. They chose a local web interface with Approve/Deny buttons; that interface is next, followed by the full interactive test checklist, a license, publishing approval, and an installation skill and submission PR.
+All seven offline tests pass, covering denial without execution, matching tool-call IDs, invalid arguments, the round limit, shell failures, timeout, output limits, and web request/approval handling.
 
-The harness has not been published and no submission PR exists yet.
+We are at the instructor's interface-review checkpoint: the student should review the web chat's appearance before proceeding. Next: finish the assignment's interactive test checklist, add a license, review and approve publishing, then publish the harness and prepare and test its installation skill and submission PR. Nothing has been published and no submission PR exists yet.
+
+## Tests
+
+```sh
+uv run python -m unittest discover -s tests -v
+```
+
+The tests use synthetic data and a mock model; they never contact a provider or require an API key.
 
 ## This computer
 
