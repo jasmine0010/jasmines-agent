@@ -1,0 +1,155 @@
+{
+  "checked_at": "2026-10-21T08:45:17.499848+00:00",
+  "platform": "Windows",
+  "source": "Fresh local Git clone in place of the unpublished public URL",
+  "prior_attempt": "Listing and denial passed; the subsequent failure test did not match the expected single failed tool result. Retest uses a separate conversation.",
+  "passed_steps": [
+    "Fresh local clone without private files",
+    "uv sync --locked",
+    "Example .env with existing environment settings; no key copied into the clone",
+    "All 12 offline tests",
+    "Documented localhost web launch",
+    "Approved file listing",
+    "Denied command without execution",
+    "Intentional failed command and model explanation in a separate chat",
+    "Per-call input/cached/output token reporting",
+    "Rename, new chat, reopen saved conversation, reload",
+    "Fresh-clone tracked-file/history credential scan"
+  ],
+  "live_cases": [
+    {
+      "name": "approved_listing",
+      "events": [
+        {
+          "type": "user",
+          "text": "Actually call the structured bash tool once with exactly Get-ChildItem -Name, then describe the actual output. An empty folder is valid."
+        },
+        {
+          "type": "usage",
+          "text": "Tokens: input=421, cached input=0, output=57",
+          "model": "nvidia/nemotron-3-ultra-550b-a55b:free"
+        },
+        {
+          "type": "approval",
+          "id": "4cf85a990b2eae3e7cb2f74a",
+          "command": "Get-ChildItem -Name"
+        },
+        {
+          "type": "decision",
+          "id": "4cf85a990b2eae3e7cb2f74a",
+          "approved": true
+        },
+        {
+          "type": "tool_result",
+          "result": {
+            "stdout": "",
+            "stderr": "",
+            "exit_code": 0,
+            "timed_out": false,
+            "truncated": false
+          }
+        },
+        {
+          "type": "usage",
+          "text": "Tokens: input=525, cached input=0, output=88",
+          "model": "nvidia/nemotron-3.5-super-vl:free"
+        },
+        {
+          "type": "assistant",
+          "text": "The `Get-ChildItem -Name` command executed successfully with exit code 0, but produced **no output at all**. The working folder is empty \u2014 there are no files or subdirectories to list."
+        }
+      ]
+    },
+    {
+      "name": "denied_command",
+      "events": [
+        {
+          "type": "user",
+          "text": "Actually call the structured bash tool once with exactly Write-Output hello. If declined, acknowledge that and do not retry."
+        },
+        {
+          "type": "usage",
+          "text": "Tokens: input=445, cached input=0, output=65",
+          "model": "dots-studio/dots-3-note-preview:free"
+        },
+        {
+          "type": "assistant",
+          "text": "\n\n\n"
+        },
+        {
+          "type": "approval",
+          "id": "350aa285aae3266cd91cbd92",
+          "command": "Write-Output hello"
+        },
+        {
+          "type": "decision",
+          "id": "350aa285aae3266cd91cbd92",
+          "approved": false
+        },
+        {
+          "type": "tool_result",
+          "result": {
+            "exit_code": null,
+            "stdout": "",
+            "stderr": "The user declined to run this command.",
+            "declined": true
+          }
+        },
+        {
+          "type": "usage",
+          "text": "Tokens: input=688, cached input=0, output=31",
+          "model": "nvidia/nemotron-3-ultra-550b-a55b:free"
+        },
+        {
+          "type": "assistant",
+          "text": "The command was declined. I acknowledge that and will not retry."
+        }
+      ]
+    },
+    {
+      "name": "failed_command_recovery",
+      "events": [
+        {
+          "type": "user",
+          "text": "For this independent acceptance test, actually request the structured bash tool with exactly doesnotexist. The harness will request approval. Do not infer or guess its result: wait for the tool reply, then explain that error. Use no other commands and do not install anything."
+        },
+        {
+          "type": "usage",
+          "text": "Tokens: input=446, cached input=0, output=79",
+          "model": "nvidia/nemotron-3.5-super-vl:free"
+        },
+        {
+          "type": "approval",
+          "id": "461dbdfb4de4547897bafd79",
+          "command": "doesnotexist"
+        },
+        {
+          "type": "decision",
+          "id": "461dbdfb4de4547897bafd79",
+          "approved": true
+        },
+        {
+          "type": "tool_result",
+          "result": {
+            "stdout": "",
+            "stderr": "doesnotexist: The term 'doesnotexist' is not recognized as a name of a cmdlet, function, script file, or executable program.\r\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\r\n",
+            "exit_code": 1,
+            "timed_out": false,
+            "truncated": false
+          }
+        },
+        {
+          "type": "usage",
+          "text": "Tokens: input=456, cached input=0, output=279",
+          "model": "dots-studio/dots-3-note-preview:free"
+        },
+        {
+          "type": "assistant",
+          "text": "\n\nThe command `doesnotexist` was executed, and the harness returned the following error:\n\n**Error:**\n```\ndoesnotexist: The term 'doesnotexist' is not recognized as a name of a cmdlet, function, script file, or executable program.\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\n```\n\n**Exit code:** 1\n\nThis is a standard PowerShell error indicating that the system could not find any executable, cmdlet, function, or script named `doesnotexist` in the current environment or PATH. The command failed because no such program exists."
+        }
+      ]
+    }
+  ],
+  "public_clone_test": "Deferred until publication approval",
+  "result": "passed"
+}

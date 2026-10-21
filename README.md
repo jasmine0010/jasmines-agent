@@ -54,7 +54,9 @@ All 12 offline tests pass. Four live model checks also passed: synthetic file li
 
 An MIT license and the installation-skill draft are prepared locally. The skill is in the class checkout at `week-2/submissions/jasmine0010/SKILL.md`, on the local `week-2-jasmine0010` branch. Publication checks found no configured API key or recognized access-token pattern in tracked files or Git history; private `.env`, chat history, and workspace files remain ignored.
 
-The user has explicitly withheld permission to push, publish, or submit. No remote repository has been created, no push has been made, and no submission PR exists. Next: complete the fresh local-clone installation check, then hold for publication approval. The instructor's public-clone check can only be completed after the repository is published with that approval.
+The installation workflow passed in a fresh temporary local clone: locked dependency setup, configuration via inherited environment settings, all 12 offline tests, localhost web launch, approved listing, denial, deliberate failed-command recovery in an independent chat, token usage, saved-chat rename/reopening, and the credential scan. Receipts are in `validation/live-checks.json` and `validation/fresh-install.json`. The temporary clone and its test server were removed.
+
+The user has explicitly withheld permission to push, publish, or submit. No remote repository has been created, no push has been made, and no submission PR exists. All currently permitted local checks are complete. Next: hold for review and explicit publication approval; then verify a clone from the public URL. Pushing the class branch and opening a PR also require the user's permission.
 
 ## Week 2 comparison check (October 21, 2026)
 
