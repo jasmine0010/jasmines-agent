@@ -56,7 +56,9 @@ An MIT license and the installation-skill draft are prepared locally. The skill 
 
 The installation workflow passed in a fresh temporary local clone: locked dependency setup, configuration via inherited environment settings, all 12 offline tests, localhost web launch, approved listing, denial, deliberate failed-command recovery in an independent chat, token usage, saved-chat rename/reopening, and the credential scan. Receipts are in `validation/live-checks.json` and `validation/fresh-install.json`. The temporary clone and its test server were removed.
 
-The user has explicitly withheld permission to push, publish, or submit. No remote repository has been created, no push has been made, and no submission PR exists. All currently permitted local checks are complete. Next: hold for review and explicit publication approval; then verify a clone from the public URL. Pushing the class branch and opening a PR also require the user's permission.
+The owner authorized Week 1 and Week 2 publication on October 21, 2026. The tested Week 2 version is public at https://github.com/jasmine0010/jasmines-agent, and its installation skill is submitted in https://github.com/huangzesen/ai-in-research-homework/pull/23. A fresh public clone passed locked setup, all 12 Week 2 offline checks, and localhost web startup. Earlier live checks passed on the same implementation; they were not repeated because the free-model quota was exhausted.
+
+This local checkout retains the Week 3 extension. Week 3 has not been pushed or submitted; its phone research check is still pending model quota. The Week 1 submission is waiting for the class tool's instruction/window/publication records in the student's own terminal.
 
 ## Week 2 comparison check (October 21, 2026)
 
@@ -64,7 +66,7 @@ Reviewed the nine open Week 2 installation-skill submissions (class PRs #9–#17
 
 All 12 offline checks passed both in this working copy and in a fresh temporary local clone without the private .env or chat database. Testing was on Windows; peer applications were inspected rather than executed. This comparison is not an instructor grade or a cross-platform runtime certification.
 
-The implementation matches the functional requirements. The license and installation skill have now been prepared locally and the remaining live loop checks have passed. Public-repository and submission verification remain pending the user's explicit publication approval.
+The implementation matches the functional requirements. The license and installation skill have now been prepared locally and the remaining live loop checks have passed. The Week 2 repository is now public and the installation skill is submitted as PR #23.
 
 Peer code snapshots:
 - https://github.com/WenyuZhang2001/ai-study-agent/blob/991acd66f7811150ed88bbcc539fddd2957fc5d8/agent.py
