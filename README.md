@@ -16,6 +16,8 @@ uv run --env-file .env python web.py
 
 Open http://127.0.0.1:8765 in your browser. The server binds only to this computer. Each proposed command has Approve and Deny buttons; token counts and command results appear in the chat. The sidebar opens saved chats. New chat creates a separate conversation without clearing earlier ones. Use Rename and Delete in the chat header; deletion asks for confirmation. Chats survive page refreshes and server restarts. Press Ctrl+C in the server terminal to stop it.
 
+All interface text uses the browser's default sans-serif font, including commands and token usage. Semibold and bold weights provide emphasis.
+
 To use a different port: `uv run --env-file .env python web.py --port 8766`.
 
 ## Saved chats
