@@ -1,4 +1,4 @@
-"""The harness's only tool: approved shell commands with bounded output."""
+"""The harness's built-in tool: approved shell commands with bounded output."""
 
 import os
 from pathlib import Path
@@ -53,7 +53,7 @@ def run_bash(command, approve, timeout=60):
     if not args:
         return {"exit_code": 127, "stdout": "", "stderr": "The required shell is not installed."}
     # Shell children do not need the harness's model API credential.
-    environment = {key: value for key, value in os.environ.items() if key not in {"API_KEY", "OPENROUTER_API_KEY", "OPENAI_API_KEY"}}
+    environment = {key: value for key, value in os.environ.items() if key not in {"API_KEY", "OPENROUTER_API_KEY", "OPENAI_API_KEY", "TELEGRAM_BOT_TOKEN"}}
     timed_out = False
     with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
         process = subprocess.Popen(

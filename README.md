@@ -1,6 +1,6 @@
 # Jasmine's Agent
 
-A small Python agent harness for the AI in Research week 2 homework. It calls an OpenAI-compatible Chat Completions API directly, maintains a conversation, and offers exactly one tool named `bash`. On Windows this tool runs PowerShell; on macOS and Linux it runs bash.
+A small Python agent harness for the AI in Research week 2 homework. It calls an OpenAI-compatible Chat Completions API directly, maintains a conversation, and offers a built-in tool named `bash`, plus tools loaded from local MCP plugins. On Windows this tool runs PowerShell; on macOS and Linux it runs bash.
 
 ## Configure
 
@@ -95,3 +95,37 @@ Receipts are under `validation/`. The publication check reports filenames and co
 MIT; see `LICENSE`.
 
 Instructor guide: https://github.com/huangzesen/ai-in-research-homework/blob/main/.agents/skills/build-a-harness/SKILL.md
+
+## Week 3 status
+
+Both MCP plugins are implemented: jasmine0010-telegram and jasmine0010-psp-waves. The owner confirmed delivery from Codex and from the normal harness web chat, and completed the tool/skill context checkpoint. All 11 research measurements fall within the Week 1 acceptance ranges, satisfying the owner's scientific-review criterion; see validation/week-3-scientific-review.json.
+
+The loader and Telegram mode are implemented. All 30 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval; every bash command and other model-requested MCP action still asks.
+
+The updated web test server on port 8766 has been stopped and Telegram mode is stopped after the live transport tests. The owner confirmed the phone listing, respected denial, and the file-count/free-space task. The phone research answer is blocked by OpenRouter free-model quota: its account endpoint reported 58 requests used against a daily limit of 50, with zero remaining on October 21, 2026. The next UTC-day reset is October 22 at 00:00 UTC (October 21 at 5:00 p.m. America/Los_Angeles). Do not repeatedly retry before reset. No paid model or credit purchase has been selected. Live owner filtering passed using a temporary wrong receiver ID without modifying .env. The restart check observed and skipped an actual pre-start message, then delivered a fresh message exactly once. Receipts are validation/week-3-owner-filter.json and validation/week-3-backlog.json. Next: start Telegram mode after quota is available and finish the PSP research question from the phone. The local submission draft is prepared in the class repository; publication remains on hold. Publication and submission remain on hold at the user's request. No Week 3 push or PR has been made.
+
+## Plugins and approvals
+
+Run `uv sync --locked` after updating, then use the existing web or terminal commands with `--env-file .env`. On startup the harness reports plugins, tool names and skills. It shows each model call's usage; the first call of each turn is also printed to the server terminal.
+
+`plugin_runtime.py` discovers `plugins/*/.claude-plugin/plugin.json`, expands each stdio server's `.mcp.json`, and keeps official MCP SDK clients open until shutdown. The OpenAI-compatible API receives each MCP input schema as a function tool named `server__tool`. Skill names, descriptions and absolute SKILL.md paths enter the system prompt; bodies are read through an approved bash call only when needed. Reopened web chats refresh this metadata on their next turn.
+
+`settings.json` allows only the three owner-approved read-only PSP tools: `psp_waves__list_psp_intervals`, `psp_waves__analyze_psp_waves`, and `psp_waves__compare_psp_wave_intervals`. Other model-requested MCP actions ask for approval; bash always asks regardless of that list. Shell children do not inherit the configured model API key or Telegram bot token. This is a working-directory and approval boundary, not an operating-system sandbox.
+
+The research server reads only its bundled public measurement snapshot. See each plugin README for its environment settings, units, conventions, and second-host setup. Use the Telegram-mode command below to receive questions and approvals on your phone.
+
+## Telegram mode
+
+Stop other instances of this bot first; only one host should poll it. From the harness directory:
+
+```sh
+uv run --locked --env-file .env python agent.py --telegram
+```
+
+Send a question to the configured bot. For each proposed command or MCP action, use Telegram's Reply action on its approval request (the final part if split) and type yes or no. Only yes approves, ignoring case and whitespace; another reply declines. Approval expires after three minutes. A reply to an older request or an unlinked yes cannot approve a new action. The full action is shown without truncation.
+
+The three trusted PSP tools run directly; shell commands and other model-requested tools still ask. The harness owns polling and sends its progress, approval requests and final answers through fixed Telegram MCP channel methods. These interface operations do not ask for approval recursively. The model retains send_message under the ordinary permission policy, but wait_for_messages is withheld from its schemas and blocked in dispatch. Unrelated questions received while awaiting approval are queued for later turns.
+
+Conversation history stays in memory across phone messages. Send /new to start fresh; Ctrl+C in the terminal stops the harness. On startup the Telegram server discards the old update backlog. On a failed model/tool turn the phone conversation resets rather than automatically retrying an uncertain action. The web interface's saved chats are separate.
+
+The bot accepts only the configured private owner chat. Its token stays in the ignored .env and the Telegram server environment; it is not added to model context. Approved commands still run with your account's permissions and can access files, so approval is not a security sandbox. Telegram bot messages are not end-to-end encrypted: do not send secrets or private research data.

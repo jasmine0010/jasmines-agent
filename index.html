@@ -101,7 +101,7 @@ function render(event, chatId) {
     stream.append(element('div','usage',event.text + (event.model ? '\n' + event.model : '')));
   } else if (event.type === 'approval') {
     const card = element('section','command'), heading = element('div','command-title'), badge = element('span','','Waiting for approval');
-    heading.append(element('span','','bash · Proposed command'), badge); card.append(heading,element('pre','',event.command));
+    heading.append(element('span','',event.command.startsWith('MCP tool ') ? 'MCP · Proposed tool call' : 'bash · Proposed command'), badge); card.append(heading,element('pre','',event.command));
     const actions = element('div','actions');
     for (const [label, approved] of [['Approve',true],['Deny',false]]) {
       const button = element('button',approved ? 'approve' : '',label); button.type = 'button';

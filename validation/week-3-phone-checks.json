@@ -1,0 +1,12 @@
+{
+  "owner_confirmed_phone_approval": true,
+  "owner_confirmed_phone_denial": true,
+  "owner_confirmed_free_space_result": true,
+  "psp_read_only_tools_explicitly_trusted": true,
+  "live_wrong_chat_rejection": true,
+  "live_old_message_skipped": true,
+  "live_fresh_message_received_once": true,
+  "phone_research_answer": "pending provider free-request quota reset",
+  "telegram_mode_running": false,
+  "published": false
+}

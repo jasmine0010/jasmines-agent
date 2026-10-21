@@ -11,6 +11,7 @@ from shell_tool import TOOL, run_bash
 
 ROOT = Path(__file__).resolve().parent
 MAX_TOOL_ROUNDS = 20
+PLUGINS = None
 
 
 def call_model(messages, tools=None):
@@ -52,15 +53,24 @@ def usage_text(result):
 
 
 def conversation():
-    return [{"role": "system", "content": (ROOT / "system_prompt.md").read_text(encoding="utf-8-sig")}]
+    prompt = (ROOT / "system_prompt.md").read_text(encoding="utf-8-sig")
+    if PLUGINS is not None:
+        prompt += "\n\n" + PLUGINS.skill_prompt()
+    return [{"role": "system", "content": prompt}]
 
 
-def execute_tool(call, approve):
+def execute_tool(call, approve, hidden_tools=()):
     """Validate model-written arguments before reaching the shell tool."""
     try:
         function = call["function"]
+        if function["name"] in hidden_tools:
+            return {"error": "This tool belongs to the interface and is unavailable to the model."}
         arguments = json.loads(function["arguments"])
+        if not isinstance(arguments, dict):
+            return {"error": "Tool arguments must be a JSON object."}
         if function["name"] != "bash":
+            if PLUGINS is not None:
+                return PLUGINS.call_tool(function["name"], arguments, approve)
             return {"error": "Unknown tool; only bash is available."}
         if not isinstance(arguments, dict) or set(arguments) != {"command"}:
             return {"error": "Expected exactly one argument: command."}
@@ -71,13 +81,20 @@ def execute_tool(call, approve):
         return {"error": "The shell could not be started or its working folder is unavailable."}
 
 
-def run_turn(messages, prompt, approve, emit, checkpoint=None):
+def run_turn(messages, prompt, approve, emit, checkpoint=None, *, hidden_tools=(), system_suffix=""):
     """The agent loop. The interface supplies approval and displays events."""
     checkpoint = checkpoint or (lambda messages: None)
+    if PLUGINS is not None and messages and messages[0].get("role") == "system":
+        messages[0] = conversation()[0]  # Refresh skill metadata in reopened chats.
+        messages[0]["content"] += system_suffix
     messages.append({"role": "user", "content": prompt})
     checkpoint(messages)
     for round_number in range(MAX_TOOL_ROUNDS):
-        result = call_model(messages, [TOOL])  # 1. Resend the conversation and tool.
+        tools = [TOOL] + (PLUGINS.tools if PLUGINS is not None else [])
+        tools = [tool for tool in tools if tool["function"]["name"] not in hidden_tools]
+        result = call_model(messages, tools)  # 1. Resend conversation and tool schemas.
+        if PLUGINS is not None and round_number == 0:
+            print("First model call: " + usage_text(result), flush=True)
         emit({"type": "usage", "text": usage_text(result), "model": result.get("model")})
         message = result["choices"][0]["message"]
         messages.append(message)  # 2. Remember the model's reply, including tool IDs.
@@ -88,7 +105,7 @@ def run_turn(messages, prompt, approve, emit, checkpoint=None):
         if not calls:  # 3. Plain text ends this turn; wait for the next user message.
             return
         for call in calls:  # 4. Execute each tool only after the user approves it.
-            output = execute_tool(call, approve)
+            output = execute_tool(call, approve, hidden_tools)
             messages.append({  # 5. Give the result back using the same tool-call ID.
                 "role": "tool", "tool_call_id": call["id"],
                 "content": json.dumps(output),
@@ -100,9 +117,9 @@ def run_turn(messages, prompt, approve, emit, checkpoint=None):
 
 
 def terminal_approve(command):
-    print("\nProposed command:\n" + command)
+    print("\nProposed action:\n" + command)
     try:
-        return input("Run this command? [y/N] ").strip().lower() in {"y", "yes"}
+        return input("Run this action? [y/N] ").strip().lower() in {"y", "yes"}
     except EOFError:
         return False
 
@@ -116,7 +133,7 @@ def terminal_emit(event):
             print("Model:", event["model"])
 
 
-def main():
+def terminal_main():
     messages = conversation()
     if sys.argv[1:] == ["--chat"]:
         print("Chat with Jasmine's Agent. Type /quit to finish.")
@@ -136,9 +153,27 @@ def main():
         run_turn(messages, " ".join(sys.argv[1:]) or "Say hello in one sentence.", terminal_approve, terminal_emit)
 
 
+def main():
+    global PLUGINS
+    from plugin_runtime import PluginRuntime
+    with PluginRuntime(ROOT) as runtime:
+        PLUGINS = runtime
+        runtime.describe()
+        try:
+            if sys.argv[1:] == ["--telegram"]:
+                from telegram_mode import TelegramMode
+                TelegramMode(runtime).run()
+            else:
+                terminal_main()
+        finally:
+            PLUGINS = None
+
+
 if __name__ == "__main__":
     try:
         main()
+    except KeyboardInterrupt:
+        print("\nStopped.")
     except (RuntimeError, OSError, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)

@@ -1,0 +1,13 @@
+{
+  "provider": "openrouter.ai",
+  "model": "openrouter/free",
+  "free_model_daily_requests": {
+    "used": 58,
+    "limit": 50,
+    "remaining": 0
+  },
+  "observed_utc": "2026-10-21T10:13:20Z",
+  "next_utc_day": "2026-10-22T00:00:00Z",
+  "paid_model_selected": false,
+  "phone_research_check": "pending"
+}

@@ -8,7 +8,9 @@ import secrets
 import sqlite3
 from urllib.parse import parse_qs, urlsplit
 
+import agent
 from agent import ROOT
+from plugin_runtime import PluginRuntime
 from history import ChatHistory
 
 
@@ -117,13 +119,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
-    with create_server(args.port) as server:
-        print("Open http://" + server.authority, flush=True)
-        print("Chat history is saved locally. Press Ctrl+C to stop.", flush=True)
+    with PluginRuntime(ROOT) as runtime:
+        agent.PLUGINS = runtime
+        runtime.describe()
         try:
-            server.serve_forever()
-        except KeyboardInterrupt:
-            pass
+            with create_server(args.port) as server:
+                print("Open http://" + server.authority, flush=True)
+                print("Chat history is saved locally. Press Ctrl+C to stop.", flush=True)
+                try:
+                    server.serve_forever()
+                except KeyboardInterrupt:
+                    pass
+        finally:
+            agent.PLUGINS = None
 
 
 if __name__ == "__main__":
