@@ -58,7 +58,7 @@ The installation workflow passed in a fresh temporary local clone: locked depend
 
 The owner authorized Week 1 and Week 2 publication on October 21, 2026. The tested Week 2 version is public at https://github.com/jasmine0010/jasmines-agent, and its installation skill is submitted in https://github.com/huangzesen/ai-in-research-homework/pull/23. A fresh public clone passed locked setup, all 12 Week 2 offline checks, and localhost web startup. Earlier live checks passed on the same implementation; they were not repeated because the free-model quota was exhausted. The public-clone receipt is validation/public-install.json.
 
-This branch contains the Week 3 extension. The public main branch retains the tested Week 2 version; use the week-3 branch for Telegram and PSP plugins. Week 3 publication is awaiting final phone verification and owner approval. The Week 1 submission is waiting for the class tool's instruction/window/publication records in the student's own terminal.
+This branch contains the Week 3 extension. The public main branch retains the tested Week 2 version; use the week-3 branch for Telegram and PSP plugins. All Week 3 technical checks are complete. Publication and the class PR await owner approval. The Week 1 submission is waiting for the class tool's instruction/window/publication records in the student's own terminal.
 
 ## Week 2 comparison check (October 21, 2026)
 
@@ -104,7 +104,7 @@ Both MCP plugins are implemented: jasmine0010-telegram and jasmine0010-psp-waves
 
 The loader and Telegram mode are implemented. All 36 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval. The owner subsequently enabled automatic Telegram execution on October 26: all phone-requested shell and MCP actions now run without approval prompts.
 
-The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. After a model timeout, the agreed PSP comparison was resumed through the Telegram interface and its answer was accepted by Telegram. The returned values match the expected ranges; owner receipt confirmation is pending. The provider quota and Telegram DNS issues from earlier sessions have cleared; the bot is running for this check on October 26, 2026. The local class submission is prepared. Publication and the Week 3 PR await the owner's final review.
+The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. After a model timeout, the agreed PSP comparison was resumed through the Telegram interface and its answer was accepted by Telegram. The owner confirmed the exact research reply from the phone on October 26, including the expected fractions, signed cross helicities, 1-30 mHz normalization, and absence of a polarity flip. The provider quota and Telegram DNS issues from earlier sessions have cleared; the bot is running for this check on October 26, 2026. The local class submission is prepared. Publication and the Week 3 PR await the owner's final review.
 
 
 ## Plugins and approvals
@@ -129,14 +129,14 @@ Send a question to the configured bot. In manual mode, for each proposed command
 
 The three trusted PSP tools run directly. In manual mode, other tools still ask. The harness owns polling and sends its progress, approval requests and final answers through fixed Telegram MCP channel methods. These interface operations do not ask for approval recursively. The model retains send_message under the ordinary permission policy, but wait_for_messages is withheld from its schemas and blocked in dispatch. Unrelated questions received while awaiting approval are queued for later turns.
 
-Conversation history stays in memory across phone messages. Send /new to start fresh; Ctrl+C in the terminal stops the harness. On startup the Telegram server discards the old update backlog. On a failed model/tool turn the phone conversation resets rather than automatically retrying an uncertain action. The web interface's saved chats are separate.
+Conversation history stays in memory across phone messages. Send /new to start fresh; Ctrl+C in the terminal stops the harness. On startup the Telegram server discards the old update backlog. Transient model connection failures retry the API request once and retain completed tool results. Other interrupted tool failures reset the phone conversation rather than rerunning an uncertain action. The web interface's saved chats are separate.
 
 The bot accepts only the configured private owner chat. Its token stays in the ignored .env and the Telegram server environment; it is not added to model context. Approved commands still run with your account's permissions and can access files, so approval is not a security sandbox. Telegram bot messages are not end-to-end encrypted: do not send secrets or private research data.
 
 ### Automatic Telegram execution
 
-The owner explicitly requested automatic execution on October 26, 2026. This local
-settings.json has `"telegram_auto_approve": true`: phone-requested shell commands
+The owner explicitly requested automatic execution on October 26, 2026. The owner selected
+`"telegram_auto_approve": true` for local use: phone-requested shell commands
 and MCP actions run without confirmation. Set it to false and restart to restore
 reply-based approval. Distribution defaults to false for the course demonstration;
 earlier manual approval and denial tests remain documented. Automatic execution
@@ -154,4 +154,4 @@ quota errors are not retried. After both connection attempts fail, Telegram
 retains the conversation and completed results so the next message can continue.
 The read-only PSP recovery receipt is validation/week-3-phone-research-recovery.json;
 it records the actual MCP call and Telegram send result, not a new phone-origin
-message or a human receipt confirmation.
+message. The owner subsequently confirmed receiving the exact answer.
