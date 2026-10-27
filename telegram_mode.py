@@ -20,7 +20,12 @@ AUTO_PHONE_PROMPT = """
 The user is communicating through Telegram and explicitly enabled automatic
 execution. The harness owns polling and delivers your final answer automatically.
 Use the supplied tools directly without asking for confirmation. Read a needed
-skill once and reuse it within the conversation. Keep replies short and plain.
+skill once and reuse it within the conversation. Do not repeat completed reads
+or commands. Use the research MCP tools for calculations instead of shell scripts.
+Keep replies short and plain.
+For research comparisons, use plain lines instead of Markdown tables or LaTeX
+and stay under 150 words. Use delta-b in velocity units for Elsasser variables;
+do not infer physical propagation direction from signed cross helicity.
 Do not poll for input or send a duplicate of your final answer. Never read or
 expose credentials. Tool timeouts, output limits and the turn limit still apply.
 """
@@ -115,6 +120,10 @@ class TelegramMode:
         try:
             agent.run_turn(self.messages, text, self.approve, emit,
                            hidden_tools={WAIT}, system_suffix=AUTO_PHONE_PROMPT if self.auto_approve else PHONE_PROMPT)
+        except agent.ModelUnavailable as error:
+            self.send(str(error) + "\nI kept the conversation and completed tool results. Send continue to try again.")
+            print("Phone model request unavailable; conversation and tool results retained.", flush=True)
+            return
         except RuntimeError as error:
             # A failure could interrupt a tool batch; don't resend malformed
             # tool-call history or automatically retry an uncertain action.

@@ -4,7 +4,7 @@ A small Python agent harness for the AI in Research week 2 homework. It calls an
 
 ## Configure
 
-Install uv, copy `.env.example` to `.env`, and enter your own API key locally. Set `BASE_URL`, `API_KEY`, and `MODEL`. Never paste keys into chat or commit `.env`. The example uses OpenRouter's free model router; model availability and rate limits vary.
+Install uv, copy `.env.example` to `.env`, and enter your own API key locally. Set `BASE_URL`, `API_KEY`, and `MODEL`. Never paste keys into chat or commit `.env`. The example uses a specific free OpenRouter model with tool support; availability and rate limits vary.
 
 ## Run the web interface
 
@@ -102,9 +102,9 @@ Instructor guide: https://github.com/huangzesen/ai-in-research-homework/blob/mai
 
 Both MCP plugins are implemented: jasmine0010-telegram and jasmine0010-psp-waves. The owner confirmed delivery from Codex and from the normal harness web chat, and completed the tool/skill context checkpoint. All 11 research measurements fall within the Week 1 acceptance ranges, satisfying the owner's scientific-review criterion; see validation/week-3-scientific-review.json.
 
-The loader and Telegram mode are implemented. All 32 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval. The owner subsequently enabled automatic Telegram execution on October 26: all phone-requested shell and MCP actions now run without approval prompts.
+The loader and Telegram mode are implemented. All 36 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval. The owner subsequently enabled automatic Telegram execution on October 26: all phone-requested shell and MCP actions now run without approval prompts.
 
-The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. The remaining check is a PSP research answer from the phone. The provider quota and Telegram DNS issues from earlier sessions have cleared; the bot is running for this check on October 26, 2026. The local class submission is prepared. Publication and the Week 3 PR await the owner's final review.
+The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. After a model timeout, the agreed PSP comparison was resumed through the Telegram interface and its answer was accepted by Telegram. The returned values match the expected ranges; owner receipt confirmation is pending. The provider quota and Telegram DNS issues from earlier sessions have cleared; the bot is running for this check on October 26, 2026. The local class submission is prepared. Publication and the Week 3 PR await the owner's final review.
 
 
 ## Plugins and approvals
@@ -142,3 +142,16 @@ reply-based approval. Distribution defaults to false for the course demonstratio
 earlier manual approval and denial tests remain documented. Automatic execution
 uses your account's permissions. Owner-chat filtering, hidden polling, tool
 timeouts, output limits, and the 20-round turn limit still apply.
+
+### Model connection recovery
+
+The local MODEL setting is pinned to nvidia/nemotron-3.5-lightning:free after a
+successful tool-call check and PSP comparison. The random free router had
+repeated shell calls and a timeout. No paid model is configured. Connection
+failures and HTTP 502/503/504 retry only the model request once, with a two-second
+delay; completed tool actions are not rerun by that retry. Authentication and
+quota errors are not retried. After both connection attempts fail, Telegram
+retains the conversation and completed results so the next message can continue.
+The read-only PSP recovery receipt is validation/week-3-phone-research-recovery.json;
+it records the actual MCP call and Telegram send result, not a new phone-origin
+message or a human receipt confirmation.

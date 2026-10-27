@@ -147,6 +147,17 @@ class PhoneTests(unittest.TestCase):
         self.assertNotIn("synthetic-secret", runtime.sent[-1])
         self.assertEqual(len(mode.messages), 1)
 
+    def test_model_connection_failure_retains_conversation_and_completed_results(self):
+        mode = TelegramMode(PhoneRuntime())
+        def fail(messages, *args, **kwargs):
+            messages.extend([{'role': 'user', 'content': 'Synthetic request'},
+                             {'role': 'tool', 'content': 'completed fixture result'}])
+            raise agent.ModelUnavailable('Connection failed after one retry.')
+        with patch.object(agent, 'run_turn', side_effect=fail):
+            mode.handle(message('Synthetic request'))
+        self.assertEqual(mode.messages[-1]['content'], 'completed fixture result')
+        self.assertIn('kept the conversation', mode.runtime.sent[-1])
+
 
 if __name__ == "__main__":
     unittest.main()

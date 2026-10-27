@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import time
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -12,6 +13,10 @@ from shell_tool import TOOL, run_bash
 ROOT = Path(__file__).resolve().parent
 MAX_TOOL_ROUNDS = 20
 PLUGINS = None
+
+
+class ModelUnavailable(RuntimeError):
+    """A transient model request failed; completed tool results remain valid."""
 
 
 def call_model(messages, tools=None):
@@ -29,13 +34,23 @@ def call_model(messages, tools=None):
         headers={"Authorization": "Bearer " + settings["API_KEY"], "Content-Type": "application/json"},
         method="POST",
     )
-    try:
-        with urlopen(request, timeout=90) as response:
-            result = json.load(response)
-    except HTTPError as error:
-        raise RuntimeError(f"Model API returned HTTP {error.code}. Check the key, model, credits, or rate limits.") from None
-    except (URLError, TimeoutError):
-        raise RuntimeError("Could not reach the model API, or the request timed out.") from None
+    for attempt in range(2):
+        try:
+            with urlopen(request, timeout=90) as response:
+                result = json.load(response)
+            break
+        except HTTPError as error:
+            status = error.code
+            error.close()
+            if status not in {502, 503, 504}:
+                raise RuntimeError(f"Model API returned HTTP {status}. Check the key, model, credits, or rate limits.") from None
+            if attempt:
+                raise ModelUnavailable(f"Model API returned HTTP {status} after one retry.") from None
+        except (URLError, TimeoutError, ConnectionError, json.JSONDecodeError):
+            if attempt:
+                raise ModelUnavailable("Could not reach the model API after one retry, or both requests timed out.") from None
+        print("Model connection interrupted; retrying the API request once. Completed tools are not rerun.", flush=True)
+        time.sleep(2)
     if result.get("error") or not result.get("choices"):
         raise RuntimeError("The model API returned an error or no choices.")
     return result
