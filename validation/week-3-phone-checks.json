@@ -6,7 +6,8 @@
   "live_wrong_chat_rejection": true,
   "live_old_message_skipped": true,
   "live_fresh_message_received_once": true,
-  "phone_research_answer": "pending provider free-request quota reset",
-  "telegram_mode_running": false,
-  "published": false
+  "phone_research_answer": "pending owner phone test; network and model quota available",
+  "telegram_mode_running": true,
+  "published": false,
+  "resumed_utc": "2026-10-27T03:17:58.076332+00:00"
 }

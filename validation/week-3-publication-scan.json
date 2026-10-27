@@ -1,7 +1,7 @@
 {
-  "harness_files_checked": 53,
+  "harness_files_checked": 54,
   "submission_files_checked": 22,
-  "historical_blobs_checked": 42,
+  "historical_blobs_checked": 91,
   "configured_credentials_found": false,
   "recognized_token_patterns_found": false,
   "plugin_copies_identical": true,
