@@ -106,8 +106,9 @@ approve its research-tool calls. No key or token should be passed to this server
 The harness now loads this plugin in terminal, web chat, and Telegram mode.
 The end-to-end phone research test is pending. The owner explicitly allowed
 these three read-only tools in the harness's `settings.json`, so they run without
-repeated approval. Shell commands (including skill-file reads) and other
-model-requested tools still ask.
+repeated approval. In manual mode shell commands (including skill-file reads)
+and other model-requested tools still ask. The owner enabled automatic Telegram
+execution locally, which runs those actions without confirmation too.
 
 ## Checks
 

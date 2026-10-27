@@ -2,6 +2,7 @@
 from collections import deque
 from pathlib import Path
 import tempfile
+import os
 import unittest
 from unittest.mock import patch
 
@@ -32,6 +33,29 @@ class PhoneRuntime:
 
 
 class PhoneTests(unittest.TestCase):
+    def test_automatic_mode_runs_real_shell_and_unlisted_mcp_without_prompting(self):
+        runtime = PhoneRuntime()
+        with tempfile.TemporaryDirectory() as folder:
+            dispatch = PluginRuntime(folder)
+            dispatch.routes['demo__read'] = (None, 'read')
+            calls = [
+                {"id": "shell", "function": {"name": "bash", "arguments": '{"command":"Write-Output auto-fixture"}' if os.name == "nt" else '{"command":"printf auto-fixture"}'}},
+                {"id": "mcp", "function": {"name": "demo__read", "arguments": '{}'}}]
+            replies = [{"choices": [{"message": {"role": "assistant", "content": None, "tool_calls": calls}}]},
+                       {"choices": [{"message": {"role": "assistant", "content": "Finished"}}]}]
+            with patch.object(agent, 'PLUGINS', dispatch), patch.object(agent, 'call_model', side_effect=replies), patch('shell_tool.WORKSPACE', Path(folder)), patch.object(dispatch, '_dispatch', return_value={'value': 42}) as mcp:
+                mode = TelegramMode(runtime, auto_approve=True)
+                mode.handle(message('Synthetic automatic execution test'))
+            self.assertIn('auto-fixture', mode.messages[-3]['content'])
+            self.assertIn('42', mode.messages[-2]['content'])
+            mcp.assert_called_once_with('demo__read', {})
+            self.assertFalse(any('Run this action?' in text for text in runtime.sent))
+
+    def test_automatic_mode_is_opt_in_and_setting_must_be_boolean(self):
+        self.assertFalse(TelegramMode(PhoneRuntime()).auto_approve)
+        with self.assertRaises(ValueError):
+            TelegramMode(PhoneRuntime(), auto_approve='true')
+
     def test_yes_must_reply_to_this_request_and_questions_survive(self):
         runtime = PhoneRuntime([[message("yes"), message("yes", 99), message("next question"), message(" YeS ", 101)]])
         mode = TelegramMode(runtime)

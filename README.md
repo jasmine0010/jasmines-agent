@@ -102,7 +102,7 @@ Instructor guide: https://github.com/huangzesen/ai-in-research-homework/blob/mai
 
 Both MCP plugins are implemented: jasmine0010-telegram and jasmine0010-psp-waves. The owner confirmed delivery from Codex and from the normal harness web chat, and completed the tool/skill context checkpoint. All 11 research measurements fall within the Week 1 acceptance ranges, satisfying the owner's scientific-review criterion; see validation/week-3-scientific-review.json.
 
-The loader and Telegram mode are implemented. All 30 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval; every bash command and other model-requested MCP action still asks.
+The loader and Telegram mode are implemented. All 32 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval. The owner subsequently enabled automatic Telegram execution on October 26: all phone-requested shell and MCP actions now run without approval prompts.
 
 The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. The remaining check is a PSP research answer from the phone. The provider quota and Telegram DNS issues from earlier sessions have cleared; the bot is running for this check on October 26, 2026. The local class submission is prepared. Publication and the Week 3 PR await the owner's final review.
 
@@ -113,7 +113,7 @@ Run `uv sync --locked` after updating, then use the existing web or terminal com
 
 `plugin_runtime.py` discovers `plugins/*/.claude-plugin/plugin.json`, expands each stdio server's `.mcp.json`, and keeps official MCP SDK clients open until shutdown. The OpenAI-compatible API receives each MCP input schema as a function tool named `server__tool`. Skill names, descriptions and absolute SKILL.md paths enter the system prompt; bodies are read through an approved bash call only when needed. Reopened web chats refresh this metadata on their next turn.
 
-`settings.json` allows only the three owner-approved read-only PSP tools: `psp_waves__list_psp_intervals`, `psp_waves__analyze_psp_waves`, and `psp_waves__compare_psp_wave_intervals`. Other model-requested MCP actions ask for approval; bash always asks regardless of that list. Shell children do not inherit the configured model API key or Telegram bot token. This is a working-directory and approval boundary, not an operating-system sandbox.
+`settings.json` allows only the three owner-approved read-only PSP tools: `psp_waves__list_psp_intervals`, `psp_waves__analyze_psp_waves`, and `psp_waves__compare_psp_wave_intervals`. In manual mode, other model-requested MCP actions and bash ask for approval. Telegram automatic mode is controlled separately by `telegram_auto_approve`. Shell children do not inherit the configured model API key or Telegram bot token. This is a working-directory and approval boundary, not an operating-system sandbox.
 
 The research server reads only its bundled public measurement snapshot. See each plugin README for its environment settings, units, conventions, and second-host setup. Use the Telegram-mode command below to receive questions and approvals on your phone.
 
@@ -125,10 +125,20 @@ Stop other instances of this bot first; only one host should poll it. From the h
 uv run --locked --env-file .env python agent.py --telegram
 ```
 
-Send a question to the configured bot. For each proposed command or MCP action, use Telegram's Reply action on its approval request (the final part if split) and type yes or no. Only yes approves, ignoring case and whitespace; another reply declines. Approval expires after three minutes. A reply to an older request or an unlinked yes cannot approve a new action. The full action is shown without truncation.
+Send a question to the configured bot. In manual mode, for each proposed command or MCP action, use Telegram's Reply action on its approval request (the final part if split) and type yes or no. Only yes approves, ignoring case and whitespace; another reply declines. Approval expires after three minutes. A reply to an older request or an unlinked yes cannot approve a new action. The full action is shown without truncation.
 
-The three trusted PSP tools run directly; shell commands and other model-requested tools still ask. The harness owns polling and sends its progress, approval requests and final answers through fixed Telegram MCP channel methods. These interface operations do not ask for approval recursively. The model retains send_message under the ordinary permission policy, but wait_for_messages is withheld from its schemas and blocked in dispatch. Unrelated questions received while awaiting approval are queued for later turns.
+The three trusted PSP tools run directly. In manual mode, other tools still ask. The harness owns polling and sends its progress, approval requests and final answers through fixed Telegram MCP channel methods. These interface operations do not ask for approval recursively. The model retains send_message under the ordinary permission policy, but wait_for_messages is withheld from its schemas and blocked in dispatch. Unrelated questions received while awaiting approval are queued for later turns.
 
 Conversation history stays in memory across phone messages. Send /new to start fresh; Ctrl+C in the terminal stops the harness. On startup the Telegram server discards the old update backlog. On a failed model/tool turn the phone conversation resets rather than automatically retrying an uncertain action. The web interface's saved chats are separate.
 
 The bot accepts only the configured private owner chat. Its token stays in the ignored .env and the Telegram server environment; it is not added to model context. Approved commands still run with your account's permissions and can access files, so approval is not a security sandbox. Telegram bot messages are not end-to-end encrypted: do not send secrets or private research data.
+
+### Automatic Telegram execution
+
+The owner explicitly requested automatic execution on October 26, 2026. This local
+settings.json has `"telegram_auto_approve": true`: phone-requested shell commands
+and MCP actions run without confirmation. Set it to false and restart to restore
+reply-based approval. Distribution defaults to false for the course demonstration;
+earlier manual approval and denial tests remain documented. Automatic execution
+uses your account's permissions. Owner-chat filtering, hidden polling, tool
+timeouts, output limits, and the 20-round turn limit still apply.

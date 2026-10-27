@@ -162,7 +162,9 @@ def main():
         try:
             if sys.argv[1:] == ["--telegram"]:
                 from telegram_mode import TelegramMode
-                TelegramMode(runtime).run()
+                path = ROOT / "settings.json"
+                settings = json.loads(path.read_text(encoding="utf-8-sig")) if path.exists() else {}
+                TelegramMode(runtime, auto_approve=settings.get("telegram_auto_approve", False)).run()
             else:
                 terminal_main()
         finally:

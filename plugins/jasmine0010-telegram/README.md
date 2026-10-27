@@ -73,12 +73,12 @@ This plugin is installed in `plugins/jasmine0010-telegram/`. The harness expands
 `.mcp.json`, discovers these tools and lists this plugin's skill metadata in the
 system prompt. The model then chooses tool calls; the host enforces permissions
 and handles secrets outside the model context. The owner's `settings.json` allows
-the three read-only PSP research tools. Every other model-requested MCP call asks
+the three read-only PSP research tools. In manual mode every other model-requested MCP call asks
 for approval, as does every bash command. Terminal, web chat, and Telegram mode support plugins.
 
 Only one process should poll the bot. In Telegram mode the harness owns polling
 and must withhold wait_for_messages from the model so it cannot swallow replies.
-Every shell command still requires an explicit approval in the user's chat.
+In manual mode every shell command requires approval in the user's chat.
 
 From the harness directory, stop other instances using this bot, then run:
 
@@ -130,3 +130,9 @@ Add `--send` only when a fixed SDK connection-test message is desired.
 References: [MCP SDK](https://py.sdk.modelcontextprotocol.io/),
 [Telegram Bot API](https://core.telegram.org/bots/api),
 [plugin layout](https://code.claude.com/docs/en/plugins-reference).
+
+The harness also supports an explicitly selected automatic mode:
+`"telegram_auto_approve": true` in settings.json runs all phone-requested shell
+and MCP actions without approval prompts. Its distribution default is false;
+the owner enabled it for local use after the manual approval/denial checks.
+The recipient filter and model polling restriction apply in either mode.

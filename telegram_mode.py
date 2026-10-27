@@ -16,11 +16,22 @@ Do not poll for input. Use send_message only for an additional progress update
 that is needed, not to duplicate your final answer. A denied action must stay
 denied: explain the limitation and do not try an alternative command or tool.
 """
+AUTO_PHONE_PROMPT = """
+The user is communicating through Telegram and explicitly enabled automatic
+execution. The harness owns polling and delivers your final answer automatically.
+Use the supplied tools directly without asking for confirmation. Read a needed
+skill once and reuse it within the conversation. Keep replies short and plain.
+Do not poll for input or send a duplicate of your final answer. Never read or
+expose credentials. Tool timeouts, output limits and the turn limit still apply.
+"""
 
 
 class TelegramMode:
-    def __init__(self, runtime, approval_seconds=180):
+    def __init__(self, runtime, approval_seconds=180, *, auto_approve=False):
+        if not isinstance(auto_approve, bool):
+            raise ValueError("telegram_auto_approve must be true or false.")
         self.runtime = runtime
+        self.auto_approve = auto_approve
         self.approval_seconds = approval_seconds
         self.pending = deque()
         self.approval_ids = set()
@@ -41,6 +52,10 @@ class TelegramMode:
         return self.channel(WAIT, {"seconds": seconds}).get("messages", [])
 
     def approve(self, action):
+        if self.auto_approve:
+            kind = action.splitlines()[0] if action.startswith("MCP tool ") else "shell"
+            print("Phone automatic execution: " + kind, flush=True)
+            return True
         # Never truncate an action that the user is being asked to approve.
         # Splitting is handled by the server; reply to the final part.
         receipt = self.send("Run this action?\n\n" + action +
@@ -87,7 +102,8 @@ class TelegramMode:
         if text == "/start":
             self.send("Ready. Send a question; use /new to reset this conversation.")
             return
-        self.send("Working on your question. I will ask before running actions.")
+        self.send("Working on your question. " + (
+            "Automatic execution is enabled." if self.auto_approve else "I will ask before running actions."))
         answers, errors = [], []
 
         def emit(event):
@@ -98,7 +114,7 @@ class TelegramMode:
 
         try:
             agent.run_turn(self.messages, text, self.approve, emit,
-                           hidden_tools={WAIT}, system_suffix=PHONE_PROMPT)
+                           hidden_tools={WAIT}, system_suffix=AUTO_PHONE_PROMPT if self.auto_approve else PHONE_PROMPT)
         except RuntimeError as error:
             # A failure could interrupt a tool batch; don't resend malformed
             # tool-call history or automatically retry an uncertain action.
@@ -117,7 +133,8 @@ class TelegramMode:
 
     def run(self):
         self.send("Jasmine's Agent is ready in Telegram mode. Send a question. "
-                  "Use Telegram Reply on each approval request and type yes or no. "
+                  + ("Automatic execution is enabled; commands and tools run without approval prompts. "
+                     if self.auto_approve else "Use Telegram Reply on each approval request and type yes or no. ") +
                   "Use /new for a fresh conversation.")
         print("Telegram mode ready. Ctrl+C stops it. Phone history stays in memory.", flush=True)
         while True:
