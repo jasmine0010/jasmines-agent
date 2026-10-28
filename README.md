@@ -58,7 +58,7 @@ The installation workflow passed in a fresh temporary local clone: locked depend
 
 The owner authorized Week 1 and Week 2 publication on October 21, 2026. The tested Week 2 version is public at https://github.com/jasmine0010/jasmines-agent, and its installation skill is submitted in https://github.com/huangzesen/ai-in-research-homework/pull/23. A fresh public clone passed locked setup, all 12 Week 2 offline checks, and localhost web startup. Earlier live checks passed on the same implementation; they were not repeated because the free-model quota was exhausted. The public-clone receipt is validation/public-install.json.
 
-This branch contains the Week 3 extension. The public main branch retains the tested Week 2 version; use the week-3 branch for Telegram and PSP plugins. All Week 3 technical checks are complete. Publication and the class PR await owner approval. The Week 1 submission is waiting for the class tool's instruction/window/publication records in the student's own terminal.
+This branch contains the Week 3 extension. The public main branch retains the tested Week 2 version; use the week-3 branch for Telegram and PSP plugins. All Week 3 technical checks are complete.
 
 ## Week 2 comparison check (October 21, 2026)
 
@@ -104,7 +104,7 @@ Both MCP plugins are implemented: jasmine0010-telegram and jasmine0010-psp-waves
 
 The loader and Telegram mode are implemented. All 36 harness tests and eight Telegram plugin tests pass; the eight research tests previously passed. Both plugins have worked through independent stdio clients and Codex. The owner explicitly authorized the three read-only PSP tools in settings.json: list_psp_intervals, analyze_psp_waves, and compare_psp_wave_intervals. These run without repeated approval. The owner subsequently enabled automatic Telegram execution on October 26: all phone-requested shell and MCP actions now run without approval prompts.
 
-The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. After a model timeout, the agreed PSP comparison was resumed through the Telegram interface and its answer was accepted by Telegram. The owner confirmed the exact research reply from the phone on October 26, including the expected fractions, signed cross helicities, 1-30 mHz normalization, and absence of a polarity flip. The provider quota and Telegram DNS issues from earlier sessions have cleared; the bot is running for this check on October 26, 2026. The local class submission is prepared. Publication and the Week 3 PR await the owner's final review.
+The owner confirmed phone command approval, denial, and free-space reporting. Live owner filtering passed with a temporary wrong receiver ID, and restart checks discarded an old message and delivered a fresh message once. After a model timeout, the agreed PSP comparison was resumed through the Telegram interface and its answer was accepted by Telegram. The owner confirmed the exact research reply from the phone on October 26, including the expected fractions, signed cross helicities, 1-30 mHz normalization, and absence of a polarity flip. The earlier quota and Telegram DNS issues cleared before the successful research test. The class submission contains both plugins and a README linking this release branch.
 
 
 ## Plugins and approvals
