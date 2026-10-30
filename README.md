@@ -123,7 +123,8 @@ Their lifecycle checks do not certify every generated interpretation.
 Sanitized receipts are under `validation/`; raw mail, drafts and conversations
 stay ignored in `validation/week-4-private/` and `logs/`.
 
-Implementation and demonstrations are complete. Publication review is pending.
+Implementation and demonstrations are complete. The owner reviewed the public
+files and approved publication.
 Codex helped implement, explain, test and document the changes; the configured
 NVIDIA model ran the live agent workflows. Licensed under MIT; see `LICENSE`.
 
