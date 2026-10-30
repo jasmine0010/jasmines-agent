@@ -6,3 +6,5 @@ __pycache__/
 *.pyc
 workspace/
 /history/
+/validation/week-4-private/
+/logs/

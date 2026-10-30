@@ -1,0 +1,8 @@
+{
+  "allow": [
+    "psp_waves__list_psp_intervals",
+    "psp_waves__analyze_psp_waves",
+    "psp_waves__compare_psp_wave_intervals"
+  ],
+  "telegram_auto_approve": false
+}

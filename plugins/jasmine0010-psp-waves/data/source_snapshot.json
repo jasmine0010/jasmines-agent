@@ -1,0 +1,205 @@
+{
+  "retrieved_utc": "2026-10-21T02:17:05.491907+00:00",
+  "responses": [
+    {
+      "interval_id": "interval-a",
+      "kind": "mag",
+      "url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=PSP_FLD_L2_MAG_RTN_4_SA_PER_CYC&parameters=psp_fld_l2_mag_RTN_4_Sa_per_Cyc&time.min=2024-12-24T07%3A59%3A00Z&time.max=2024-12-24T09%3A16%3A00Z&format=json",
+      "sha256": "4052f2280fdee2bb36a9a40a87c838e1a50edd460436277c124e5b80e9c9e6e8",
+      "rows": 21148,
+      "parameters": [
+        {
+          "name": "Time",
+          "type": "isotime",
+          "units": "UTC",
+          "length": 30,
+          "fill": null
+        },
+        {
+          "name": "psp_fld_l2_mag_RTN_4_Sa_per_Cyc",
+          "type": "double",
+          "units": "nT",
+          "fill": "-1.0E31",
+          "description": "Magnetic field in RTN coordinates (4 samples per cycle cadence)",
+          "size": [
+            3
+          ],
+          "bins": [
+            {
+              "name": "component_index_RTN",
+              "units": " ",
+              "centers": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "interval_id": "interval-a",
+      "kind": "velocity",
+      "url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=PSP_SWP_SPI_SF00_L3_MOM&parameters=QUALITY_FLAG%2CVEL_RTN_SUN&time.min=2024-12-24T07%3A59%3A00Z&time.max=2024-12-24T09%3A16%3A00Z&format=json",
+      "sha256": "6f88d84e67a4dd4ff83c99edc4f5acb8d35b971e97e8897b03b42d7f06e321f0",
+      "rows": 2644,
+      "parameters": [
+        {
+          "name": "Time",
+          "type": "isotime",
+          "units": "UTC",
+          "length": 30,
+          "fill": null
+        },
+        {
+          "name": "QUALITY_FLAG",
+          "type": "integer",
+          "units": " ",
+          "fill": "65535",
+          "description": "Quality Flag"
+        },
+        {
+          "name": "VEL_RTN_SUN",
+          "type": "double",
+          "units": "km/s",
+          "fill": "NaN",
+          "description": "Partial Moment Velocity in RTN Coordinates and Sun reference frame",
+          "size": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "interval_id": "interval-a",
+      "kind": "density",
+      "url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=PSP_FLD_L3_SQTN_RFS_V1V2&parameters=electron_density%2Cdensity_quality_flag&time.min=2024-12-24T07%3A59%3A00Z&time.max=2024-12-24T09%3A16%3A00Z&format=json",
+      "sha256": "b0081239d5312d61ee7f0107820d03420e460e023c0605e85260bbe3f80fb39a",
+      "rows": 738,
+      "parameters": [
+        {
+          "name": "Time",
+          "type": "isotime",
+          "units": "UTC",
+          "length": 30,
+          "fill": null
+        },
+        {
+          "name": "electron_density",
+          "type": "double",
+          "units": "cm^-3",
+          "fill": "-1.0E31",
+          "description": "Electron number density"
+        },
+        {
+          "name": "density_quality_flag",
+          "type": "integer",
+          "units": "0=fail 1=>pass",
+          "fill": "255",
+          "description": "Electron density quality flag, byte: avail starting 09/17/2023"
+        }
+      ]
+    },
+    {
+      "interval_id": "interval-b",
+      "kind": "mag",
+      "url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=PSP_FLD_L2_MAG_RTN_4_SA_PER_CYC&parameters=psp_fld_l2_mag_RTN_4_Sa_per_Cyc&time.min=2024-12-24T10%3A44%3A00Z&time.max=2024-12-24T12%3A01%3A00Z&format=json",
+      "sha256": "d8fa0ce08e21d3492a0de9b0887a9df93c3fe50d198ed11c131ccaf18dc414ad",
+      "rows": 21149,
+      "parameters": [
+        {
+          "name": "Time",
+          "type": "isotime",
+          "units": "UTC",
+          "length": 30,
+          "fill": null
+        },
+        {
+          "name": "psp_fld_l2_mag_RTN_4_Sa_per_Cyc",
+          "type": "double",
+          "units": "nT",
+          "fill": "-1.0E31",
+          "description": "Magnetic field in RTN coordinates (4 samples per cycle cadence)",
+          "size": [
+            3
+          ],
+          "bins": [
+            {
+              "name": "component_index_RTN",
+              "units": " ",
+              "centers": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "interval_id": "interval-b",
+      "kind": "velocity",
+      "url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=PSP_SWP_SPI_SF00_L3_MOM&parameters=QUALITY_FLAG%2CVEL_RTN_SUN&time.min=2024-12-24T10%3A44%3A00Z&time.max=2024-12-24T12%3A01%3A00Z&format=json",
+      "sha256": "923da10f24865e567f1d70aa50810948e35188acc75b7411e06cbd787338ac7c",
+      "rows": 2644,
+      "parameters": [
+        {
+          "name": "Time",
+          "type": "isotime",
+          "units": "UTC",
+          "length": 30,
+          "fill": null
+        },
+        {
+          "name": "QUALITY_FLAG",
+          "type": "integer",
+          "units": " ",
+          "fill": "65535",
+          "description": "Quality Flag"
+        },
+        {
+          "name": "VEL_RTN_SUN",
+          "type": "double",
+          "units": "km/s",
+          "fill": "NaN",
+          "description": "Partial Moment Velocity in RTN Coordinates and Sun reference frame",
+          "size": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "interval_id": "interval-b",
+      "kind": "density",
+      "url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=PSP_FLD_L3_SQTN_RFS_V1V2&parameters=electron_density%2Cdensity_quality_flag&time.min=2024-12-24T10%3A44%3A00Z&time.max=2024-12-24T12%3A01%3A00Z&format=json",
+      "sha256": "dcfde8005d20e18c4d6bde32c7ae0ae883079f208dd725f1461ee5751193a03e",
+      "rows": 884,
+      "parameters": [
+        {
+          "name": "Time",
+          "type": "isotime",
+          "units": "UTC",
+          "length": 30,
+          "fill": null
+        },
+        {
+          "name": "electron_density",
+          "type": "double",
+          "units": "cm^-3",
+          "fill": "-1.0E31",
+          "description": "Electron number density"
+        },
+        {
+          "name": "density_quality_flag",
+          "type": "integer",
+          "units": "0=fail 1=>pass",
+          "fill": "255",
+          "description": "Electron density quality flag, byte: avail starting 09/17/2023"
+        }
+      ]
+    }
+  ]
+}

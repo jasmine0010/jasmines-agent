@@ -1,0 +1,14 @@
+{
+  "state": "smtp_accepted",
+  "at_utc": "2026-10-30T01:59:57.880083+00:00",
+  "approved_draft_sha256": "80d534f581a776c1cea757651df8495dca91cf0ef690211ad844412eea92e1ea",
+  "recipient": "lingtai2026@gmail.com",
+  "subject": "[AIR-2026 hello] jasmine0010",
+  "result": {
+    "status": "accepted_by_smtp",
+    "message_id": "<179332559535.32892.11007038708730701063@gmail.com>",
+    "to": "lingtai2026@gmail.com",
+    "notice": "SMTP acceptance is not confirmation of delivery. Do not resend the class hello."
+  },
+  "model": "nvidia/nemotron-3.5-lightning:free"
+}

@@ -1,0 +1,13 @@
+{
+  "checked_at_utc": "2026-10-30T03:04:57.319316+00:00",
+  "offline_checks_passed": 81,
+  "existing_checks": 59,
+  "background_checks": 22,
+  "platform": "Windows",
+  "model_responses": "synthetic; no external model requests in offline tests",
+  "owned_shell_and_grandchild_killed": true,
+  "live_demo_1_complete": true,
+  "live_demos_2_to_5_complete": false,
+  "background_learning_checkpoint": "owner confirmed",
+  "failure_followup_race_regression": "passed"
+}

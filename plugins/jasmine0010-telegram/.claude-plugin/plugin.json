@@ -1,0 +1,7 @@
+{
+  "name": "jasmine0010-telegram",
+  "version": "0.1.0",
+  "description": "Send and receive plain Telegram messages in one configured private owner chat.",
+  "author": {"name": "Jasmine"},
+  "license": "MIT"
+}

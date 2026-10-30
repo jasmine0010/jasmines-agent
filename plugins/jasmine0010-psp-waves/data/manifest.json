@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "intervals": [
+    {
+      "id": "interval-a",
+      "file": "interval-a.npz",
+      "start_utc": "2024-12-24T08:00:00Z",
+      "stop_utc_exclusive": "2024-12-24T09:15:00Z",
+      "sha256": "5eda47803abec758478fcf239f6e633845d6413088a483bce3acc1bf0f0f8601"
+    },
+    {
+      "id": "interval-b",
+      "file": "interval-b.npz",
+      "start_utc": "2024-12-24T10:45:00Z",
+      "stop_utc_exclusive": "2024-12-24T12:00:00Z",
+      "sha256": "bf4af83011589550166e9b00258f43117e6888376f4c8b8523179256fd37f72a"
+    }
+  ]
+}

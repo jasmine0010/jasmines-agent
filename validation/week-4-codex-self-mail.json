@@ -1,0 +1,48 @@
+{
+  "checked_at_utc": "2026-10-30T01:47:05.582333+00:00",
+  "codex_exit_code": 0,
+  "subject": "[AIR-2026 self-test] jasmine0010 f9937893",
+  "tool_events": [
+    {
+      "server": "week4_email",
+      "tool": "send_message",
+      "status": "in_progress"
+    },
+    {
+      "server": "week4_email",
+      "tool": "send_message",
+      "status": "completed"
+    },
+    {
+      "server": "week4_email",
+      "tool": "check_inbox",
+      "status": "in_progress"
+    },
+    {
+      "server": "week4_email",
+      "tool": "check_inbox",
+      "status": "completed"
+    },
+    {
+      "server": "week4_email",
+      "tool": "check_inbox",
+      "status": "in_progress"
+    },
+    {
+      "server": "week4_email",
+      "tool": "check_inbox",
+      "status": "completed"
+    },
+    {
+      "server": "week4_email",
+      "tool": "read_message",
+      "status": "in_progress"
+    },
+    {
+      "server": "week4_email",
+      "tool": "read_message",
+      "status": "completed"
+    }
+  ],
+  "agent_report": "{\"sent\":true,\"read_back\":true,\"message_id\":\"<179332476275.20720.4783381838706132940@gmail.com>\",\"read_uid\":\"7\",\"summary\":\"Sent once and verified the exact subject and body marker f9937893.\"}"
+}

@@ -1,0 +1,42 @@
+{
+  "checked_at_utc": "2026-10-30T02:23:49.621597+00:00",
+  "passed": true,
+  "main_direct_mail_calls": [],
+  "child_tool_calls": [
+    "email__check_inbox",
+    "email__read_message"
+  ],
+  "child_log": "<harness>/logs\\20261030T022309499213Z-0eb994c9\\sa-1.jsonl",
+  "raw_body_in_child_only": true,
+  "main_total_tokens": 9933,
+  "child_tokens": 6261,
+  "approvals": [
+    {
+      "action": "[sa-1 \u00b7 mail-reader] MCP tool email__check_inbox",
+      "approved": true
+    },
+    {
+      "action": "[sa-1 \u00b7 mail-reader] MCP tool email__read_message",
+      "approved": true
+    }
+  ],
+  "main_report": "**Subagent report summary:**\n\n- **sender**: lingtai2026@gmail.com  \n- **subject**: [AIR\u20112026] Welcome Jasmine's Agent and class\u2011agent introductions  \n- **one\u2011line summary**: The email welcomes Jasmine's Agent and introduces the other class\u2011agent participants, listing each agent's research interests.",
+  "delegation_result": {
+    "id": "sa-1",
+    "agent": "mail-reader",
+    "state": "idle",
+    "report": "- **sender**: lingtai2026@gmail.com  \n- **subject**: [AIR\u20112026] Welcome Jasmine's Agent and class\u2011agent introductions  \n- **summary**: The email welcomes Jasmine's Agent and introduces the other class\u2011agent participants, listing each agent's research interests.",
+    "untrusted": true,
+    "failure_reason": null,
+    "turns": 3,
+    "tokens": 6261,
+    "seconds": 21.9,
+    "stats": "[sa-1 \u00b7 mail-reader \u00b7 3 turns \u00b7 6,261 tokens \u00b7 21.9 s]"
+  },
+  "decoded_body_values_checked": 1,
+  "child_allowed_tools": [
+    "email__check_inbox",
+    "email__read_message"
+  ],
+  "separate_system_prompt_verified": true
+}

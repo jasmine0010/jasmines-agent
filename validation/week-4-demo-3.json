@@ -1,0 +1,23 @@
+{
+  "checked_at_utc": "2026-10-30T03:25:25.541949+00:00",
+  "passed": true,
+  "session": "20261030T031158709911Z-d5bb7c9b",
+  "id": "sa-1",
+  "same_worker_thread": true,
+  "old_context_preserved": true,
+  "new_tool_calls": [],
+  "new_agent_ids": [],
+  "turns_before": 3,
+  "turns_after": 4,
+  "child_report": "**Fractions (from interval\u2011a)**  \n\n- Five\u2011minute band (2.5\u20134.5\u202fmHz): **13.48\u202f%** of the 1\u201130\u202fmHz total  \n- Two\u2011minute band (6\u201312\u202fmHz): **23.04\u202f%** of the 1\u201130\u202fmHz total  \n\n**Remaining power outside these two bands**\n\n\\[\n\\text{Remaining \\%}=100\\%-(13.48\\%+23.04\\%) = 63.48\\%\n\\]\n\nThus roughly **63\u202f% of the one\u2011sided RTN vector\u2011trace PSD energy** in the 1\u201130\u202fmHz band lies outside the five\u2011minute and two\u2011minute windows.\n\n**Why the remainder does not prove a separate wave population**\n\n- The 1\u201130\u202fmHz band is a broad frequency range that contains contributions from many physical processes (e.g., turbulence at sub\u2011ion scales, kinetic Alfv\u00e9n waves, background magnetic fluctuations, instrument noise, etc.).  \n- Measuring a sizable fraction of power in two specified sub\u2011bands only tells us that *some* of the variance is concentrated there; the rest is simply the aggregate of all other frequencies and contributions that are not captured by those narrow windows.  \n- Band\u2011power comparisons alone are not a significance test; they do not demonstrate that the un\u2011band\u2011limited power arises from a distinct wave mode or solar source.  \n- The measurement set includes quality\u2011controlled four\u2011second alignment, neglects alpha particles, uses the QTN electron\u2011density proxy, and is subject to SPAN field\u2011of\u2011view biases and 60\u2011second gap\u2011filling. These methodological factors shape the observed spectrum but do not, by themselves, certify a separate population.  \n\nIn short, the ~63\u202f% of power outside the 2.5\u20114.5\u202fmHz and 6\u201112\u202fmHz bands is expected from the broad nature of the 1\u201130\u202fmHz trace PSD and does **not** by itself imply the existence of an additional wave population or a definitive solar origin.",
+  "main_report": "**sa\u20111 answer (interval\u202fa)**  \n- Five\u2011minute (2.5\u20114.5\u202fmHz) fraction =\u202f13.48\u202f% of the 1\u201130\u202fmHz total.  \n- Two\u2011minute (6\u201112\u202fmHz) fraction =\u202f23.04\u202f% of the 1\u201130\u202fmHz total.  \n- Remaining power outside those two bands =\u202f100\u202f%\u202f\u2212\u202f(13.48\u202f%\u202f+\u202f23.04\u202f%)\u202f=\u202f63.48\u202f% (\u2248\u202f63\u202f%).  \n\n**Why the remainder does not prove a separate wave population**  \nThe 1\u201130\u202fmHz band is a broad frequency range that aggregates many physical processes\u2014turbulence at sub\u2011ion scales, kinetic Alfv\u00e9n waves, background magnetic fluctuations, instrument noise, etc. Measuring sizable fractions in only two narrow sub\u2011bands simply tells us where some of the variance is concentrated; the rest is the aggregate of all other frequencies and contributions not captured by those windows. Band\u2011power comparisons alone are not a significance test and cannot demonstrate that the un\u2011band\u2011limited power arises from a distinct wave mode or solar source. Methodological factors (quality\u2011controlled 4\u2011second alignment, neglect of alpha particles, use of the QTN electron\u2011density proxy, SPAN field\u2011of\u2011view biases, 60\u2011second gap\u2011filling) shape the observed spectrum but, by themselves, do not certify a separate population. In short, the ~63\u202f% of power outside the 2.5\u20114.5\u202fmHz and 6\u201112\u202fmHz bands is expected from the inherently broad 1\u201130\u202fmHz trace PSD and does **not** by itself imply the existence of an additional wave population or a definitive solar origin.",
+  "checks_scope": "Worker-context reuse is checked separately from review of the scientific explanation.",
+  "scientific_review": {
+    "combined_band_percent": 36.521874107362336,
+    "remaining_percent": 63.478125892637664,
+    "rounded_remaining_percent": 63.48,
+    "arithmetic_verified": true,
+    "interpretation": "The remainder is power outside the specified windows within 1-30 mHz. Band sums alone do not establish a distinct wave population or solar source.",
+    "unsupported_generated_examples": "The raw reports mention sub-ion turbulence, kinetic Alfven waves and instrument noise. These specific physical attributions are not established by the saved measurements and are excluded from the reviewed conclusion."
+  }
+}

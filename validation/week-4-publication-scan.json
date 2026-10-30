@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-10-30T03:54:02.297787+00:00",
+  "public_harness_files_checked": 105,
+  "class_submission_files_checked": 27,
+  "historical_blobs_checked": {
+    "local_harness": 157,
+    "public_harness_base": 46
+  },
+  "configured_credentials_found": false,
+  "recognized_token_patterns_found": false,
+  "dedicated_agent_address_found": false,
+  "raw_demo_1_mail_body_found": false,
+  "raw_body_encodings_compared": 3,
+  "private_runtime_paths_selected": false,
+  "email_agents_transcripts_identical": true,
+  "public_telegram_auto_approve": false,
+  "push_performed": false,
+  "pr_opened": false
+}

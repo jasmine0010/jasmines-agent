@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "email": {
+      "command": "uv",
+      "args": ["run", "--script", "${CLAUDE_PLUGIN_ROOT}/server.py"],
+      "env": {
+        "EMAIL_ADDRESS": "${EMAIL_ADDRESS}",
+        "EMAIL_APP_PASSWORD": "${EMAIL_APP_PASSWORD}",
+        "EMAIL_ALLOWED_RECIPIENTS": "${EMAIL_ALLOWED_RECIPIENTS}"
+      }
+    }
+  }
+}

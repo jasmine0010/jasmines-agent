@@ -1,0 +1,7 @@
+{
+  "name": "jasmine0010-email",
+  "version": "0.1.0",
+  "description": "Read a dedicated agent Gmail inbox and send plain text to explicitly allowed recipients.",
+  "author": {"name": "Jasmine"},
+  "license": "MIT"
+}

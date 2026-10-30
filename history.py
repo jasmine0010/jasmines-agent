@@ -8,8 +8,9 @@ from pathlib import Path
 import secrets
 import sqlite3
 import threading
+import time
 
-from agent import conversation, run_turn
+from agent import Agent, conversation, run_turn
 
 
 def now():
@@ -55,6 +56,7 @@ class Chat:
         self.created_at = record["created_at"]
         self.updated_at = record.get("updated_at", self.created_at)
         self.messages = record["messages"]
+        self.agent_state = Agent(max_seconds=None)
         self.events = record["events"]
         self.renamed = record.get("renamed", False)
         self.busy = False
@@ -106,24 +108,35 @@ class Chat:
 
     def emit(self, event):
         with self.lock:
+            if self.deleted:
+                return
             self.events.append(event)
             self.save()
 
-    def approve(self, command):
+    def approve(self, command, *, cancel_event=None, deadline=None):
         pending = {"id": secrets.token_hex(12), "command": command, "ready": threading.Event(), "decision": False}
         with self.lock:
             self.pending = pending
             self.emit({"type": "approval", "id": pending["id"], "command": command})
-        pending["ready"].wait()
+        while not pending["ready"].wait(0.1):
+            if ((cancel_event is not None and cancel_event.is_set())
+                    or (deadline is not None and time.monotonic() >= deadline)):
+                with self.lock:
+                    if not pending["ready"].is_set():
+                        pending["decision"] = False
+                        pending["ready"].set()
+                        self.emit({"type": "decision", "id": pending["id"], "approved": False, "cancelled": True})
+                break
         with self.lock:
-            self.pending = None
+            if self.pending is pending:
+                self.pending = None
         return pending["decision"]
 
     def work(self, prompt):
         try:
             with self.lock:
                 messages = deepcopy(self.messages)
-            run_turn(messages, prompt, self.approve, self.emit, checkpoint=self.checkpoint)
+            run_turn(messages, prompt, self.approve, self.emit, checkpoint=self.checkpoint, agent_state=self.agent_state)
         except RuntimeError as error:
             self.emit({"type": "error", "text": str(error)})
         except Exception as error:
@@ -135,13 +148,17 @@ class Chat:
         finally:
             with self.lock:
                 self.busy = False
-                self.pending = None
                 self.save()
 
     def start(self, prompt):
         with self.lock:
             if self.busy or self.deleted:
                 return False
+            if prompt.strip() == "/agents":
+                manager = self.agent_state.manager
+                self.emit({"type": "user", "text": prompt})
+                self.emit({"type": "tool_result", "result": manager.list() if manager else {"agents": []}})
+                return True
             if not self.renamed and not any(event["type"] == "user" for event in self.events):
                 self.title = prompt.splitlines()[0][:60]
             self.busy = True
@@ -237,4 +254,6 @@ class ChatHistory:
                 self.store.delete(chat_id)
                 chat.deleted = True
                 del self.chats[chat_id]
-            return True
+        if chat.agent_state.manager is not None:
+            chat.agent_state.manager.close()
+        return True

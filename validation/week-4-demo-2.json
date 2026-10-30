@@ -1,0 +1,104 @@
+{
+  "checked_at_utc": "2026-10-30T03:14:30.400411+00:00",
+  "passed": true,
+  "session": "20261030T031158709911Z-d5bb7c9b",
+  "windows": [
+    {
+      "id": "sa-1",
+      "first_model_call_utc": "2026-10-30T03:13:45.477918+00:00",
+      "report_utc": "2026-10-30T03:13:59.812936+00:00",
+      "state": "idle",
+      "turns": 3,
+      "tokens": 6026,
+      "thread": "subagent-sa-1"
+    },
+    {
+      "id": "sa-2",
+      "first_model_call_utc": "2026-10-30T03:13:45.480352+00:00",
+      "report_utc": "2026-10-30T03:13:57.439259+00:00",
+      "state": "idle",
+      "turns": 3,
+      "tokens": 6368,
+      "thread": "subagent-sa-2"
+    },
+    {
+      "id": "sa-3",
+      "first_model_call_utc": "2026-10-30T03:13:45.487445+00:00",
+      "report_utc": "2026-10-30T03:14:10.682505+00:00",
+      "state": "idle",
+      "turns": 2,
+      "tokens": 6165,
+      "thread": "subagent-sa-3"
+    }
+  ],
+  "common_overlap_seconds": 11.952,
+  "three_starts_before_wait": true,
+  "child_tool_calls": {
+    "sa-1": [
+      {
+        "name": "list_psp_intervals",
+        "arguments": "{}"
+      },
+      {
+        "name": "psp_waves__analyze_psp_waves",
+        "arguments": "{\"interval_id\":\"interval-a\"}"
+      }
+    ],
+    "sa-2": [
+      {
+        "name": "list_psp_intervals",
+        "arguments": "{}"
+      },
+      {
+        "name": "psp_waves__analyze_psp_waves",
+        "arguments": "{\"interval_id\":\"interval-b\"}"
+      }
+    ],
+    "sa-3": [
+      {
+        "name": "psp_waves__compare_psp_wave_intervals",
+        "arguments": "{\"second_interval_id\":\"interval-b\",\"first_interval_id\":\"interval-a\"}"
+      }
+    ]
+  },
+  "main_total_tokens": 35002,
+  "child_tokens": 18559,
+  "followup_target": "sa-1",
+  "main_report": "**Part\u202fA \u2013 interval\u202fa** (2024\u201112\u201124\u202fT08:00:00Z\u202f\u2192\u202fT09:15:00Z).  \nTotal 1\u201130\u202fmHz vector\u2011trace PSD energy =\u202f47\u202f582\u202fnT\u00b2. Five\u2011minute (2.5\u20114.5\u202fmHz) fraction =\u202f13.5\u202f% of total; two\u2011minute (6\u201112\u202fmHz) fraction =\u202f23.0\u202f% of total. Interpretation limit: these band\u2011power comparisons do not establish statistical significance or solar\u2011source attribution.\n\n**Part\u202fB \u2013 interval\u202fb** (2024\u201112\u201124\u202fT10:45:00Z\u202f\u2192\u202fT12:00:00Z).  \nTotal 1\u201130\u202fmHz vector\u2011trace PSD energy =\u202f145\u202f263\u202fnT\u00b2. Five\u2011minute fraction =\u202f28.8\u202f% of total; two\u2011minute fraction =\u202f25.0\u202f% of total. Five\u2011minute\u2011band peak period \u2248\u202f281\u202fs (\u2248\u202f4.7\u202fmin) for the \u223c0.222\u202fmHz frequency resolution. Same interpretation limit applies.\n\n**Part\u202fC \u2013 cross\u2011helicity.**  \nFive\u2011minute signed cross helicity \u03c3_c =\u202f+0.920 (interval\u202fa) and\u202f+0.966 (interval\u202fb); two\u2011minute \u03c3_c =\u202f+0.943 (interval\u202fb). Positive \u03c3_c means the z_plus\u202f=\u202f\u03b4V\u202f+\u202f\u03b4B Elsasser component dominates, indicating stronger forward\u2011propagating waves. No propagation direction is inferred from the sign, and the sign is not flipped with field\u2011polarity changes. Limitations: QTN electron\u2011density proxy used for proton density (alpha particles neglected); SPAN ion moments may retain field\u2011of\u2011view bias; cross\u2011helicity is a band\u2011power comparison only, not a statistical significance test.",
+  "checks_scope": "Fan-out/lifecycle checks; scientific narrative reviewed separately against actual tool results.",
+  "scientific_review": {
+    "checked_at_utc": "2026-10-30T03:18:00.822735+00:00",
+    "reviewer": "Codex, against saved primary tool outputs",
+    "findings": [
+      "The raw child/main wording incorrectly labeled positive cross helicity as forward propagation; the reviewed result uses z_plus energy dominance only.",
+      "The comparison child incorrectly said interval-a two-minute cross helicity was unavailable; the actual sigma_c_2min field is present and is included below.",
+      "The child added an unsupported 0.2% frequency-precision statement. The tool reports about 0.222 mHz grid spacing and a peak only for interval-b; approximate reporting is appropriate.",
+      "Sigma_c is a normalized energy imbalance, not the percentage of power in an Elsasser component."
+    ],
+    "checked_measurements": {
+      "interval-a": {
+        "start_utc": "2024-12-24T08:00:00Z",
+        "stop_utc_exclusive": "2024-12-24T09:15:00Z",
+        "magnetic_energy_1_30_mHz_nT2": 47582.44485057537,
+        "energy_fraction_5min": 0.13479229958911387,
+        "energy_fraction_2min": 0.23042644148450953,
+        "sigma_c_5min": 0.9203408531907935,
+        "sigma_c_2min": 0.9635198564312939,
+        "peak_period_s": null,
+        "frequency_spacing_mHz": 0.22222222222222224
+      },
+      "interval-b": {
+        "start_utc": "2024-12-24T10:45:00Z",
+        "stop_utc_exclusive": "2024-12-24T12:00:00Z",
+        "magnetic_energy_1_30_mHz_nT2": 145262.8942458724,
+        "energy_fraction_5min": 0.2879491604581023,
+        "energy_fraction_2min": 0.25026835595751745,
+        "sigma_c_5min": 0.9659184905564834,
+        "sigma_c_2min": 0.9431308660732775,
+        "peak_period_s": 281.25,
+        "frequency_spacing_mHz": 0.22222222222222224
+      }
+    },
+    "reviewed_summary": "Interval A (08:00-09:15 UTC on December 24, 2024) has 47,582 nT^2 of 1-30 mHz trace-PSD energy; its five-/two-minute fractions are 13.48%/23.04%. Interval B (10:45-12:00 UTC) has 145,263 nT^2 and fractions 28.79%/25.03%, with a five-minute-band peak around 281 s (4.7 minutes). Coverage is half-open. Five-/two-minute signed cross helicity is +0.920/+0.964 in A and +0.966/+0.943 in B. Positive values indicate z_plus energy dominance for z_plus=deltaV+deltab, with deltab in velocity units. They do not determine physical propagation direction or give the percentage of energy in z_plus. Density-proxy, alpha-particle, SPAN field-of-view and method limits remain; these band comparisons do not establish significance or a solar source."
+  }
+}

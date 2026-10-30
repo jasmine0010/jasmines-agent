@@ -1,0 +1,30 @@
+{
+  "checked_at_utc": "2026-10-30T03:38:08.765240+00:00",
+  "passed": true,
+  "session": "20261030T033719130201Z-694f2286",
+  "checks": {
+    "same_worker": true,
+    "exact_single_sleep_call": true,
+    "process_alive_before_stop": true,
+    "get_process_saw_owned_pid": true,
+    "process_tree_killed": true,
+    "process_gone_after_stop": true,
+    "state_stopped": true,
+    "resume_refused": true
+  },
+  "owned_pid": 36632,
+  "readiness_wait_seconds": 0.561,
+  "get_process_before_stop": "{\"Id\":36632,\"ProcessName\":\"pwsh\"}",
+  "approvals": [
+    {
+      "request": "[sa-1 \u00b7 process-demo] Start-Sleep -Seconds 600",
+      "approved": true,
+      "basis": "Owner's explicit chat approval of this exact command"
+    }
+  ],
+  "resume_result": {
+    "error": "This subagent is stopped or failed and cannot resume. Use start for a new agent."
+  },
+  "main_report": "**Demonstration: `stop` on Windows (process\u2011demo worker)**\n\n**1. Start the worker**\n```\nsubagent start(agent=\"process-demo\", task=\"Call bash once with exactly Start-Sleep -Seconds 600 and then report the actual result.\")\n```\nResult: worker id `sa-1` entered state `running`.\n\n**2. Inspect while running \u2013 `subagent list`**\n```\nsubagent list()\n```\nResult (truncated to relevant fields):\n```json\n{\n  \"agents\": [\n    {\n      \"id\": \"sa-1\",\n      \"agent\": \"process-demo\",\n      \"state\": \"running\",\n      \"turns\": 1,\n      \"tokens\": 562,\n      \"seconds\": 1.88,\n      \"failure_reason\": null,\n      \"task\": \"Call bash once with exactly Start-Sleep -Seconds 600 and then report the actual result.\",\n      \"current_action\": \"bash: Start-Sleep -Seconds 600\"\n    }\n  ]\n}\n```\n*Observation:* The worker is running, executing the requested `Start-Sleep -Seconds 600` command.\n\n**3. Inspect while running \u2013 `subagent read`**\n```\nsubagent read(id=\"sa-1\", last=5)\n```\nResult (relevant steps):\n```json\n{\n  \"id\": \"sa-1\",\n  \"untrusted\": true,\n  \"steps\": [\n    {\"at_utc\": \"2026-10-30T03:37:28.916625+00:00\", \"kind\": \"usage\", \"preview\": \"...\"},\n    {\"at_utc\": \"2026-10-30T03:37:28.917120+00:00\", \"kind\": \"message\", \"preview\": \"...\"},\n    {\"at_utc\": \"2026-10-30T03:37:28.917499+00:00\", \"kind\": \"approval_requested\", \"preview\": \"{\\\"action\\\": \\\"Start-Sleep -Seconds 600\\\"}\"},\n    {\"at_utc\": \"2026-10-30T03:37:28.917906+00:00\", \"kind\": \"approval_result\", \"preview\": \"{\\\"approved\\\": true}\"},\n    {\"at_utc\": \"2026-10-30T03:37:28.963241+00:00\", \"kind\": \"process_started\", \"preview\": \"{\\\"pid\\\": 36632, \\\"command\\\": \\\"Start-Sleep -Seconds 600\\\"}\"}\n  ]\n}\n```\n*Observation:* The shell launched with PID 36632 and the `Start-Sleep -Seconds 600` command was accepted and started.\n\n**4. Stop immediately \u2013 `subagent stop`**\n```\nsubagent stop(id=\"sa-1\")\n```\nResult:\n```json\n{\n  \"id\": \"sa-1\",\n  \"agent\": \"process-demo\",\n  \"state\": \"stopped\",\n  \"report\": \"\",\n  \"untrusted\": true,\n  \"failure_reason\": \"Stopped by the owner.\",\n  \"turns\": 1,\n  \"tokens\": 562,\n  \"seconds\": 4.62,\n  \"stats\": \"[sa-1 \u2022 process-demo \u2022 1 turns \u2022 562 tokens \u2022 4.6 s]\",\n  \"process_tree_killed\": true\n}\n```\n*Observation:* The worker terminated after 4.6 seconds (well before the 600\u2011second sleep would complete). The process tree was killed, and the `failure_reason` records that it was stopped by the owner.\n\n**Summary of observed results**\n- Worker started and reported `running` with action `Start-Sleep -Seconds 600`.\n- `list` confirmed the running state and current action.\n- `read` showed the command launch (PID 36632) and approval flow.\n- `stop` terminated the worker after ~4.6 seconds, setting state to `stopped`, reporting `\"Stopped by the owner.\"`, and confirming `process_tree_killed: true`. The 600\u2011second sleep did **not** finish.",
+  "owned_shell_elapsed_seconds_before_stop": 3.077
+}

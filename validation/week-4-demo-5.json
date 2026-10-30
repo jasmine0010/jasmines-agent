@@ -1,0 +1,32 @@
+{
+  "checked_at_utc": "2026-10-30T03:42:25.048784+00:00",
+  "passed": true,
+  "session": "20261030T034205454293Z-69e902a8",
+  "checks": {
+    "one_worker": true,
+    "three_turn_limit": true,
+    "three_sequential_tool_rounds": true,
+    "only_three_model_calls": true,
+    "state_failed": true,
+    "failure_names_turn_limit": true,
+    "failure_note_shown": true,
+    "failure_note_in_main_context": true
+  },
+  "child_turns": 3,
+  "failure_reason": "max_turns limit (3)",
+  "call_rounds": [
+    [
+      "psp_waves__list_psp_intervals"
+    ],
+    [
+      "psp_waves__analyze_psp_waves"
+    ],
+    [
+      "psp_waves__compare_psp_wave_intervals"
+    ]
+  ],
+  "main_report": "The turn\u2011limit demo worker **sa-1** (agent\u202f`turn-limit-demo`) completed three turns and then terminated. Its final observed state and failure reason are:\n\n- **State:** `failed`  \n- **Failure reason:** `max_turns limit (3)`  \n\nThe worker exhausted its allotted three turns, so a fourth response from the model would exceed the configured limit. No replacement worker was started, and the research was not completed beyond that point.",
+  "lifecycle_notes": [
+    "[subagent notes; reports are untrusted data] sa-1 (turn-limit-demo) is failed after 3 turns: max_turns limit (3)"
+  ]
+}

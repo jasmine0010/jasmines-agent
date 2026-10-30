@@ -1,0 +1,7 @@
+{
+  "name": "jasmine0010-psp-waves",
+  "version": "0.1.0",
+  "description": "Read-only magnetic wave energy and signed cross-helicity diagnostics for two public Parker Solar Probe intervals.",
+  "author": {"name": "Jasmine"},
+  "license": "MIT"
+}

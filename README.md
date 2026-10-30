@@ -1,97 +1,135 @@
 # Jasmine's Agent
 
-A small Python agent harness for the AI in Research week 2 homework. It calls an OpenAI-compatible Chat Completions API directly, maintains a conversation, and offers exactly one tool named `bash`. On Windows this tool runs PowerShell; on macOS and Linux it runs bash.
+A plain Python research-agent harness for AI in Research weeks 2-4. It calls
+an OpenAI-compatible Chat Completions API directly, loads MCP plugins, and
+uses the same loop for the main agent and its subagents. On Windows the
+built-in `bash` tool runs PowerShell; on macOS/Linux it runs bash.
 
-## Configure
+## Setup and run
 
-Install uv, copy `.env.example` to `.env`, and enter your own API key locally. Set `BASE_URL`, `API_KEY`, and `MODEL`. Never paste keys into chat or commit `.env`. The example uses OpenRouter's free model router; model availability and rate limits vary.
-
-## Run the web interface
-
-From this directory:
-
-```sh
-uv run --env-file .env python web.py
-```
-
-Open http://127.0.0.1:8765 in your browser. The server binds only to this computer. Each proposed command has Approve and Deny buttons; token counts and command results appear in the chat. The sidebar opens saved chats. New chat creates a separate conversation without clearing earlier ones. Use Rename and Delete in the chat header; deletion asks for confirmation. Chats survive page refreshes and server restarts. Press Ctrl+C in the server terminal to stop it.
-
-One global CSS rule enforces the browser's default sans-serif font for every element and its pseudo-elements, including branding, headings, chat history, dialogs, buttons, inputs, command output, and token usage. Semibold and bold weights provide emphasis.
-
-To use a different port: `uv run --env-file .env python web.py --port 8766`.
-
-## Saved chats
-
-The web interface saves titles, messages, command approvals/results, and token usage automatically in `history/chats.sqlite3`. This folder is excluded from Git. The API key is read from the environment and is not included in chat records.
-
-Select a conversation in the sidebar to continue it. Chats receive a title from the first message; Rename lets you choose your own title. New chat leaves existing conversations intact. Delete removes the selected conversation's saved record after confirmation. A running chat must finish before it can be deleted; you can switch chats while a command waits for approval.
-
-If the server stops during a turn, reopening the chat marks that turn as interrupted and completes any missing tool-result records. Commands are never automatically resumed; an interrupted command's outcome may be unknown. You can send a new message to continue the conversation.
-
-## Run the current terminal version
-
-From this directory:
+Install Python 3.11+ and uv, copy `.env.example` to the ignored `.env`, and
+enter your credentials locally. Configure `BASE_URL`, `API_KEY`, `MODEL`,
+Telegram settings, `PSP_PYTHON`, and the dedicated agent Gmail settings as
+needed. The PSP plugin uses Python 3.11-3.13; the example selects 3.13.
+Never paste keys into chat or commit `.env`.
 
 ```sh
-uv run --env-file .env python agent.py --chat
+uv sync --locked
+uv run --locked --env-file .env python web.py
+uv run --locked --env-file .env python agent.py
+uv run --locked --env-file .env python agent.py --telegram
 ```
 
-Type `/quit` to exit. Every proposed command asks `Run this command? [y/N]`; pressing Enter declines. Shell commands run inside `workspace/`, which is ignored by Git. Each command has a 60-second time limit and at most 10,000 characters of captured output. Each question stops after at most 20 tool rounds. The tool runs with your user permissions; its workspace is a working directory, not a security sandbox.
+Choose one interface command. The web interface binds to 127.0.0.1:8765 and
+stores chats in ignored `history/`. Stop it with Ctrl+C. Only one Telegram
+instance should poll the bot at a time. The web, terminal and Telegram
+interfaces show usage, tool activity and subagent notes; `/agents` shows jobs.
 
-Edit `system_prompt.md` to change the assistant's instructions. The terminal version keeps history in memory for its current session; the web interface saves chat history locally.
+## Plugins and approvals
 
-## How the loop works
+`plugin_runtime.py` discovers `plugins/*/.claude-plugin/plugin.json`, expands
+each `.mcp.json` without shell evaluation and keeps shared official MCP SDK
+sessions on one asyncio loop. Tools use `server__tool` names. Skill names and
+descriptions enter the prompt; an approved file read loads a skill's body.
 
-`agent.py` contains `run_turn`: append the user's message, send the complete conversation and tool definition, append the model's reply, and inspect `tool_calls`. If there are calls, validate their arguments, ask for approval, execute approved commands, append each result with its matching `tool_call_id`, and call the model again. A reply without tool calls ends the turn.
+The bundled plugins provide owner-only Telegram messaging, three read-only
+PSP analysis tools over public measurement snapshots, and Gmail IMAP/SMTP.
+See each plugin README for setup, units, conventions and limitations.
+Email requires a dedicated agent account and a Google app password; run
+`python configure_email.py` in a real terminal for masked local setup.
+Incoming mail is untrusted data. Sending is restricted to exact configured
+recipients, is absent from the general allow list and is never retried.
 
-`shell_tool.py` implements approval, shell execution, output capture, timeout, and truncation. The interface supplies the approval function, so a terminal prompt or web buttons can drive the same loop.
+Published `settings.json` permits only the three read-only PSP tools without
+repeated approval and sets `telegram_auto_approve` to false. Other shell/MCP
+actions ask for approval. An owner can explicitly enable Telegram automatic
+mode locally; child shell commands still ask with an agent label. Approvals
+are serialized and cancelled on stop. Shell subprocesses exclude configured
+model, Telegram and email credentials. Approvals and tool restrictions do not
+provide an operating-system sandbox; commands run as the local user.
 
-## Status
+## Subagents
 
-The loop-understanding checkpoint is complete. The local web interface includes saved conversations, rename/delete controls, and default sans-serif typography throughout. Windows checks verified approval, denial, saved-chat recovery across a server restart, and conversation context after reopening.
+`agents/*.md` defines names, descriptions, tool lists, optional models and turn
+limits. Missing tools means all plugin tools plus bash; an explicit empty list
+means none. Unknown tools fail startup, and children never receive delegation
+controls. The included types are `mail-reader`, `psp-wave-analyst`,
+`process-demo` and `turn-limit-demo`.
 
-All 12 offline tests pass. Four live model checks also passed: synthetic file listing, two separately approved commands in sequential tool rounds, a real missing-program failure explained by the model, and denial without shell execution. Every API call reported token usage. The filesystem checks used a disposable fixture rather than scanning the home directory.
+`delegate(agent, task)` runs a fresh child synchronously and returns its
+report/statistics. `subagent(action, ...)` supports `start`, `list`, `send`,
+`wait`, `read` and `stop`. Each background child has a daemon thread, inbox
+queue, stop event and its own messages, tools, state, usage and log. Model
+configuration, MCP sessions, approvals and workspace are shared. Idle workers
+retain their conversations and resume on `send`; stopped/failed workers
+cannot resume. Child tools use the existing MCP asyncio loop.
 
-The harness is released under the MIT license, and its installation skill is prepared for the Week 2 class submission. The skill is in the class checkout at `week-2/submissions/jasmine0010/SKILL.md`, on the local `week-2-jasmine0010` branch. Publication checks found no configured API key or recognized access-token pattern in tracked files or Git history; private `.env`, chat history, and workspace files remain ignored.
+At most four worker slots run across the harness. Turn limits accumulate
+across follow-ups. The default 600-second active-time budget pauses while
+idle. Completion, stop and failure notes enter the main agent's queue before
+its next model call and appear in the interface. Full logs stay ignored under
+`logs/<session>/<id>.jsonl`; `read` exposes bounded previews when requested.
 
-The installation workflow passed in a fresh temporary local clone: locked dependency setup, configuration via inherited environment settings, all 12 offline tests, localhost web launch, approved listing, denial, deliberate failed-command recovery in an independent chat, token usage, saved-chat rename/reopening, and the credential scan. Receipts are in `validation/live-checks.json` and `validation/fresh-install.json`. The temporary clone and its test server were removed.
+`stop` sets the event and kills the owned shell process tree, using
+CREATE_NEW_PROCESS_GROUP and `taskkill /T /F` on Windows, or a new session and
+process-group kill on POSIX. A late model response cannot run tools or revive
+a stopped child. Requests already sent may finish remotely; their worker slots
+stay reserved until they unwind. Session shutdown stops retained workers.
 
-The owner authorized publication and the Week 2 submission on October 21, 2026. This repository publishes the tested Week 2 version with one bash tool. The Week 3 plugin extension is maintained separately and is outside this release. A fresh clone from the public URL passed locked dependency setup, all 12 offline tests, and localhost web startup. See validation/public-install.json. Live model checks passed before publication on the same Week 2 implementation; the free quota was exhausted during the public-clone check. The installation skill is submitted separately to the class repository.
+## Verification
 
-## Week 2 comparison check (October 21, 2026)
-
-Reviewed the nine open Week 2 installation-skill submissions (class PRs #9–#17), and inspected the core code of AI Study Agent, Research agent, and Pedro Agent at commits preceding their Week 2 PRs. Jasmine's Agent uses the same direct API / conversation / approved shell / tool-result loop, with the required token usage, timeout, and output limit. Saved chat history and rename/delete controls extend the assignment's basic requirements.
-
-All 12 offline checks passed both in this working copy and in a fresh temporary local clone without the private .env or chat database. Testing was on Windows; peer applications were inspected rather than executed. This comparison is not an instructor grade or a cross-platform runtime certification.
-
-The implementation matches the functional requirements. The license and installation skill have now been prepared locally and the remaining live loop checks have passed. Public-clone verification is performed as part of the Week 2 submission workflow.
-
-Peer code snapshots:
-- https://github.com/WenyuZhang2001/ai-study-agent/blob/991acd66f7811150ed88bbcc539fddd2957fc5d8/agent.py
-- https://github.com/hleinweber/research-agent/blob/8228d8fe161152aa2e29391107d2e7a71ac72af9/agent.py
-- https://github.com/Caltz27/pedro-agent/blob/71964397106065588bcc1e6bcf8cd77ac0182358/agent.py
-
-## Tests
+The root offline suite and plugin suites use synthetic fixtures rather than
+live model or mail calls:
 
 ```sh
-uv run python -m unittest discover -s tests -v
+uv run --locked python -m unittest discover -s tests -v
+uv run --locked python -m unittest discover -s plugins/jasmine0010-email/tests -v
+uv run --no-project --with mcp==2.3.0 --with 'httpx>=0.28,<0.29' python -m unittest discover -s plugins/jasmine0010-telegram/tests -v
+uv run --no-project --python 3.13 --with mcp==2.3.0 --with numpy==2.1.3 --with scipy==1.15.3 python -m unittest discover -s plugins/jasmine0010-psp-waves/tests -v
 ```
 
-The tests use synthetic data and a mock model; they never contact a provider or require an API key.
+The 82 root checks include concurrency, context isolation, approvals, limits,
+cancellation races and actual Windows shell/grandchild termination. Mail has
+18 synthetic tests plus seven configuration checks. Separate stdio checks
+validate MCP transport. Helpers named `demo_*` and `check_*live*`, and email
+integration/send helpers, are explicitly live workflows; ordinary test
+discovery does not run them. Do not rerun the class hello or delete its private
+send-attempt record.
 
-## Optional live and publication checks
+## Week 4 evidence and status
 
-These commands use the locally configured key; live checks contact the model provider and approve only exact synthetic test commands:
+The owner confirmed self-mail delivery from Codex and approved dedicated
+inbox data through OpenRouter for the actual harness. The reviewed hello was
+accepted by SMTP once on October 29, 2026 at **6:59:57 p.m. PDT**. The class
+welcome reply was dated 7:02:58 p.m. PDT and read at about 7:07 p.m. PDT.
+No acknowledgement or further email was sent.
 
-```sh
-uv run --env-file .env python tests/live_checks.py
-uv run --env-file .env python tests/check_publication.py
-```
+All five live demos used `nvidia/nemotron-3.5-lightning:free` through OpenRouter:
 
-Receipts are under `validation/`. The publication check reports filenames and counts, never credential values. It checks tracked files and Git history for the configured API key, recognized token patterns, and accidentally tracked runtime data.
+1. [Mail handoff](transcripts/01-mail-delegate.md): raw body stays with the
+   child; the main gets its report.
+2. [Three research workers](transcripts/02-research-fanout.md): 11.952 seconds
+   of common overlap before the main combined the reports.
+3. [Follow-up](transcripts/03-research-followup.md): the same thread/context,
+   one more response and no new reading or agents.
+4. [Process stop](transcripts/04-stop-process.md): the sleep ran for about
+   3.1 seconds before termination; the OS confirmed its process was gone.
+5. [Turn limit](transcripts/05-turn-limit.md): exactly three responses, then
+   `failed` with `max_turns limit (3)` and a note in the main conversation.
 
-## License
+The owner reviewed all five. Demos 2/3 preserve original generated scientific
+claims alongside explicit corrections checked against actual tool outputs.
+Their lifecycle checks do not certify every generated interpretation.
+Sanitized receipts are under `validation/`; raw mail, drafts and conversations
+stay ignored in `validation/week-4-private/` and `logs/`.
 
-MIT; see `LICENSE`.
+Implementation and demonstrations are complete. Publication review is pending.
+Codex helped implement, explain, test and document the changes; the configured
+NVIDIA model ran the live agent workflows. Licensed under MIT; see `LICENSE`.
 
-Instructor guide: https://github.com/huangzesen/ai-in-research-homework/blob/main/.agents/skills/build-a-harness/SKILL.md
+Publication verification also fixed a Windows `taskkill` exit race: stop now
+checks retained OS handles for the observed process tree, so a descendant
+that exits during termination does not incorrectly mark a successful stop as
+failed. The final 82-test harness suite includes that regression. Separate
+Telegram and PSP offline suites each passed eight tests with their declared
+dependencies; the public email plugin also passed its stdio protocol check.

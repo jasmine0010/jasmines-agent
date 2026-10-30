@@ -1,0 +1,94 @@
+{
+  "source": "<home>/ai-in-research-homework\\week-1\\submissions\\jasmine0010\\psp-wave-energy-diagnostics\\tests\\expected.json",
+  "passed": true,
+  "checks": [
+    {
+      "interval_id": "interval-a",
+      "measurement": "magnetic_energy_1_30_mHz_nT2",
+      "value": 47582.44485057537,
+      "min": 44561.266984,
+      "max": 55105.670667,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-a",
+      "measurement": "energy_fraction_5min",
+      "value": 0.13479229958911385,
+      "min": 0.114459,
+      "max": 0.187169,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-a",
+      "measurement": "energy_fraction_2min",
+      "value": 0.23042644148450953,
+      "min": 0.201004,
+      "max": 0.261312,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-a",
+      "measurement": "sigma_c_5min",
+      "value": 0.9203408531907935,
+      "min": 0.81046,
+      "max": 0.939357,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-a",
+      "measurement": "sigma_c_2min",
+      "value": 0.9635198564312939,
+      "min": 0.932745,
+      "max": 0.981319,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-b",
+      "measurement": "magnetic_energy_1_30_mHz_nT2",
+      "value": 145262.8942458724,
+      "min": 127920.383312,
+      "max": 156771.064216,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-b",
+      "measurement": "energy_fraction_5min",
+      "value": 0.2879491604581023,
+      "min": 0.258507,
+      "max": 0.376973,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-b",
+      "measurement": "energy_fraction_2min",
+      "value": 0.25026835595751745,
+      "min": 0.18638,
+      "max": 0.284001,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-b",
+      "measurement": "sigma_c_5min",
+      "value": 0.9659184905564834,
+      "min": 0.948078,
+      "max": 0.994929,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-b",
+      "measurement": "sigma_c_2min",
+      "value": 0.9431308660732776,
+      "min": 0.923147,
+      "max": 0.977054,
+      "passed": true
+    },
+    {
+      "interval_id": "interval-b",
+      "measurement": "peak_period_s",
+      "value": 281.25,
+      "min": 249.705882,
+      "max": 336.142858,
+      "passed": true
+    }
+  ]
+}

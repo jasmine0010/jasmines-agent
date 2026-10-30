@@ -97,11 +97,14 @@ function render(event, chatId) {
   if (event.type === 'user' || event.type === 'assistant') {
     const card = element('article', 'message ' + event.type);
     card.append(element('div','label',event.type === 'user' ? 'You' : "Jasmine's Agent"), element('div','text',event.text)); stream.append(card);
+  } else if (event.type === 'subagent_note') {
+    const card = element('article','message assistant');
+    card.append(element('div','label','Subagent update'),element('div','text',event.text)); stream.append(card);
   } else if (event.type === 'usage') {
     stream.append(element('div','usage',event.text + (event.model ? '\n' + event.model : '')));
   } else if (event.type === 'approval') {
     const card = element('section','command'), heading = element('div','command-title'), badge = element('span','','Waiting for approval');
-    heading.append(element('span','','bash · Proposed command'), badge); card.append(heading,element('pre','',event.command));
+    heading.append(element('span','',event.command.startsWith('MCP tool ') ? 'MCP · Proposed tool call' : 'bash · Proposed command'), badge); card.append(heading,element('pre','',event.command));
     const actions = element('div','actions');
     for (const [label, approved] of [['Approve',true],['Deny',false]]) {
       const button = element('button',approved ? 'approve' : '',label); button.type = 'button';

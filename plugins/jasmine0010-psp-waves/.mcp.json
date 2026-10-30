@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "psp_waves": {
+      "command": "uv",
+      "args": ["run", "--script", "${CLAUDE_PLUGIN_ROOT}/server.py"],
+      "env": {"UV_PYTHON": "${PSP_PYTHON}"}
+    }
+  }
+}

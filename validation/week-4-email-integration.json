@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-10-30T01:53:34.017220+00:00",
+  "email_plugin_discovered": true,
+  "email_tools": [
+    "email__check_inbox",
+    "email__read_message",
+    "email__send_message"
+  ],
+  "actual_model": "nvidia/nemotron-3.5-lightning:free",
+  "model_tool_calls": [
+    "email__check_inbox",
+    "email__read_message"
+  ],
+  "draft_format_valid": true,
+  "note_word_count": 43,
+  "email_sent": false,
+  "formatting_note": "Accepted the subject line separately from the email body; all eight body fields match exactly."
+}

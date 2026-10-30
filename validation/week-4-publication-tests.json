@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-10-30T03:52:44.649136+00:00",
+  "publication_copy_verified": true,
+  "harness_offline_tests": 82,
+  "email_and_configuration_tests": 25,
+  "telegram_offline_tests": 8,
+  "psp_offline_tests": 8,
+  "email_stdio_protocol_check": "passed",
+  "windows_taskkill_exit_race_regression": "passed with actual owned shell and grandchild termination",
+  "live_demo_receipts": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "live_demos_rerun_during_publication": false,
+  "no_mail_sent_during_publication_checks": true
+}
